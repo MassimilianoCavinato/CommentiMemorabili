@@ -1,0 +1,32 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "expo": "^33.0.0",
+    "expo-facebook": "^5.0.1",
+    "expo-google-sign-in": "^5.0.1",
+    "react": "16.8.3",
+    "react-dom": "^16.8.6",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react-native-fbsdk": "0.10.1",
+    "react-native-google-signin": "^0.10.0",
+    "react-native-image-pan-zoom": "^2.1.11",
+    "react-native-image-placeholder": "^1.0.14",
+    "react-native-image-with-placeholder": "^0.1.1",
+    "react-native-instagram-login": "^1.1.1",
+    "react-native-material-bottom-navigation": "^1.0.4",
+    "react-native-web": "^0.11.4",
+    "shuffle-array": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.1.1"
+  },
+  "private": true
+}
