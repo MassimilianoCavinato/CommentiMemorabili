@@ -11,9 +11,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "assets/CM_logo.png",
+    "icon": "./assets/CM_logo.png",
     "splash": {
-      "image": "assets/CM_logo.png",
+      "image": "./assets/CM_logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#222222"
     },
@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/MassimilianoCavinato/CommentiMemorabili.git"
   }
 }

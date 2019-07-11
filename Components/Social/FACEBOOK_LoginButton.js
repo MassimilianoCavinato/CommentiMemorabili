@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Alert, Button, View } from 'react-native';
+import { SocialIcon } from 'react-native-elements';
+import { Alert, View } from 'react-native';
 import * as Facebook from 'expo-facebook';
 
-export default class FBLoginButton extends Component {
+export default class FACEBOOK_LoginButton extends Component {
   
     _handleFacebookLogin = async () => {
     try {
@@ -46,13 +47,13 @@ export default class FBLoginButton extends Component {
   
   render() {
     return (
-      <View style={{marginTop: 8, marginBottom: 8}}>
-        <Button
-            title="Login with Facebook"
-            onPress={this._handleFacebookLogin}
-            style={{marginBottom: 8, backgroundColor: 'red'}}
-        />
-      </View>
+      <SocialIcon
+          button
+          raised
+          type="facebook"
+          title="Login with Facebook"
+          onPress={this._handleFacebookLogin}
+      />
     )
   }
 }

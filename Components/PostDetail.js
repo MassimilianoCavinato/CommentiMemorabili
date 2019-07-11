@@ -25,20 +25,22 @@ export default class PostItem extends React.Component {
   render() {
     return (
       <View style={{backgroundColor: '#fff', marginBottom: 16 }}>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
           <TouchableHighlight onPress={this.props.showPrev}> 
-            <Icon size={32} color="gray" name={"arrow-left-bold"}>
-              PREV
-            </Icon>
+            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
+              <Icon size={32} color="gray" name={"arrow-left-bold"} />
+              <Text style={{ fontSize: 24, color: 'gray' }}>PREV</Text>
+            </View>
           </TouchableHighlight>
           <TouchableHighlight onPress={this.props.showNext}>
-            <Icon size={32} color="gray" name={"arrow-right-bold"} >
-              NEXT
-            </Icon>
+            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
+              <Text style={{ fontSize: 24, color: 'gray' }}>NEXT</Text>
+              <Icon size={32} color="gray" name={"arrow-right-bold"} />
+            </View>
           </TouchableHighlight>
         </View>
         <Category categoryname={this.props.category} />
-        <Text style={{fontWeight: 'bold', fontSize: 22, paddingLeft: 4, fontFamily: 'sans-serif-condensed'}}>{this.props.title}</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 22, paddingLeft: 4 }}>{this.props.title}</Text>
         <ImageZoom 
           cropWidth={Dimensions.get('window').width} 
           cropHeight={500}
@@ -53,17 +55,22 @@ export default class PostItem extends React.Component {
           <DownVotesCounter count={this.props.downvotes}/>
           <CommentsCounter count={this.props.comments}/>
         </View>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <TouchableHighlight onPress={this.props.showPrev}> 
-            <Icon size={32} color="gray" name={"arrow-left-bold"}>
-              PREV
-            </Icon>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
+          
+          <TouchableHighlight onPress={this.props.showPrev}> 
+            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
+              <Icon size={32} color="gray" name={"arrow-left-bold"} />
+              <Text style={{ fontSize: 24, color: 'gray' }}>PREV</Text>
+            </View>
           </TouchableHighlight>
+
           <TouchableHighlight onPress={this.props.showNext}>
-            <Icon size={32} color="gray" name={"arrow-right-bold"} >
-              NEXT
-            </Icon>
+            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
+              <Text style={{ fontSize: 24, color: 'gray' }}>NEXT</Text>
+              <Icon size={32} color="gray" name={"arrow-right-bold"} />
+            </View>
           </TouchableHighlight>
+       
         </View>
         <VirtualizedList
           data={shuffle(this.state.comments)}

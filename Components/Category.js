@@ -10,7 +10,7 @@ export default class Category extends React.Component {
   render() {
     return (
       <View>
-        <Text style={{fontSize: 12, paddingLeft: 4, color: '#bbb', fontWeight: 'bold', fontFamily: 'monospace'}}>{this.props.categoryname}</Text>
+        <Text style={{fontSize: 12, paddingLeft: 4, color: '#bbb', fontWeight: 'bold'}}>{this.props.categoryname}</Text>
       </View>
     )
   }
