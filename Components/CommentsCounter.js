@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default class CommentsCounter extends React.Component {
@@ -10,9 +10,10 @@ export default class CommentsCounter extends React.Component {
 
   render() {
     return (
-      <Icon size={24} color="dodgerblue" name={"comment"} style={{marginRight: 12}}> 
-        <Text>{this.props.count.toString()}</Text>
-      </Icon>
+      <View style={{alignItems: 'center', flexDirection: 'row', width: 80 }}>
+        <Icon size={20} color="#aaa" name={"comment"} style={{ marginRight: 4 }} />
+        <Text style={{fontSize: 12,  color:"#aaa"}}>{this.props.count.toString()}</Text>
+      </View>
     )
   }
 }

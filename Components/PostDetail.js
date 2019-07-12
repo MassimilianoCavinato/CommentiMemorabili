@@ -1,6 +1,6 @@
 import React from 'react';
 import shuffle from 'shuffle-array';
-import {Text, View, Image, Dimensions, TouchableHighlight, VirtualizedList } from 'react-native';
+import {Text, View, Image, Dimensions, TouchableOpacity, VirtualizedList } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import UpVotesCounter from './UpVotesCounter';
@@ -26,18 +26,18 @@ export default class PostItem extends React.Component {
     return (
       <View style={{backgroundColor: '#fff', marginBottom: 16 }}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
-          <TouchableHighlight onPress={this.props.showPrev}> 
+          <TouchableOpacity onPress={this.props.showPrev}> 
             <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
               <Icon size={32} color="gray" name={"arrow-left-bold"} />
               <Text style={{ fontSize: 24, color: 'gray' }}>PREV</Text>
             </View>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={this.props.showNext}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.props.showNext}>
             <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
               <Text style={{ fontSize: 24, color: 'gray' }}>NEXT</Text>
               <Icon size={32} color="gray" name={"arrow-right-bold"} />
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
         <Category categoryname={this.props.category} />
         <Text style={{fontWeight: 'bold', fontSize: 22, paddingLeft: 4 }}>{this.props.title}</Text>
@@ -57,19 +57,19 @@ export default class PostItem extends React.Component {
         </View>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
           
-          <TouchableHighlight onPress={this.props.showPrev}> 
+          <TouchableOpacity onPress={this.props.showPrev}> 
             <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
               <Icon size={32} color="gray" name={"arrow-left-bold"} />
               <Text style={{ fontSize: 24, color: 'gray' }}>PREV</Text>
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
 
-          <TouchableHighlight onPress={this.props.showNext}>
+          <TouchableOpacity onPress={this.props.showNext}>
             <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
               <Text style={{ fontSize: 24, color: 'gray' }}>NEXT</Text>
               <Icon size={32} color="gray" name={"arrow-right-bold"} />
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
        
         </View>
         <VirtualizedList

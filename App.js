@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, Text, ScrollView, VirtualizedList } from 'react-native';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import TabBottom from './Components/TabBottom';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
 import Footer from './Components/Footer';
@@ -16,13 +14,6 @@ export default class App extends React.Component {
       posts: [],
       viewType: 'items',
       postId: 0,
-      tabBottom: 'closed'
-    }
-  }
-
-  onSwipe(gestureName, gestureState) {
-    if(this.state.tabBottom !== 'closed'){
-      this.set_TabBottom('closed');
     }
   }
 
@@ -58,7 +49,7 @@ export default class App extends React.Component {
         downvotes={post.downvotes}
         upvotes={post.upvotes}
         comments={post.comments}
-        category={"Categoria ..."}
+        category={post.category}
         showPrev={() => this.showPrev()}
         showNext={() => this.showNext()}
       />);
@@ -78,7 +69,7 @@ export default class App extends React.Component {
             downvotes={item.downvotes}
             upvotes={item.upvotes}
             comments={item.comments}
-            category={"Categoria ..."}
+            category={item.category}
             showPostDetail={()=> self.showPostDetail(item._id)}
           />
         }}
@@ -91,36 +82,14 @@ export default class App extends React.Component {
     this.scrollview.scrollTo({ y: 0 });
   }
 
-  TabBottom() {
-    if(this.state.tabBottom === 'closed'){
-      return null;
-    }
-    else{
-      return <TabBottom style={{zIndex: 0}} tab={this.state.tabBottom}/>
-    }
-  }
-
-  set_TabBottom(tab){
-    if(this.state.tabBottom !== tab){
-      console.log('setting tab bottom', tab);
-      this.setState({ tabBottom: tab });
-    }
-  }
-
   render () {
     return (
-      <View style={{ flex: 1, backgroundColor: '#ddd' , paddingTop: 24}}>
-         {this.TabBottom()}
-        {/* <GestureRecognizer 
-          onSwipe={(direction, state) => this.onSwipe(direction, state)}
-          config={{ velocityThreshold: 0.3, directionalOffsetThreshold: 80 }}
-          style={{ flex: 1 }}
-        > */}
-          <ScrollView ref={(scrollview) => this.scrollview = scrollview}>
-            {this.showContent()}
-          </ScrollView>
-        {/* </GestureRecognizer> */}
-        <Footer set_TabBottom={tab => this.set_TabBottom(tab)}/>
+      <View style={{ flex: 1, backgroundColor: '#ddd'}}>
+        <View style={{ backgroundColor: '#6EC24C', height: 22 }} />
+        <ScrollView  ref={(scrollview) => this.scrollview = scrollview}>
+          {this.showContent()}
+        </ScrollView>
+        <Footer setModal={tab => this.setModal(tab)}/>
       </View>
     )
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import BottomNavigation, { FullTab } from 'react-native-material-bottom-navigation';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+import ModalTab from './ModalTab';
 
 export default class Footer extends React.Component {
   constructor(props){
@@ -30,12 +31,13 @@ export default class Footer extends React.Component {
       },
       {
         key: 'User',
-        icon: 'death-star',
+        icon: 'account',
         label: 'User',
         barColor: '#19CCFF',
         pressColor: 'rgba(255, 255, 255, 0.16)'
       }
     ]
+    this.state = { activeTab: "" }
   }
  
   renderIcon = icon => ({ isActive }) => (
@@ -54,11 +56,9 @@ export default class Footer extends React.Component {
   render() {
     return (
       <View>
+        <ModalTab activeTab={this.state.activeTab} />
         <BottomNavigation
-          onTabPress={newTab => {
-            this.setState({ activeTab: newTab.key });
-            this.props.set_TabBottom(newTab.key)
-          }}
+          onTabPress={newTab => this.setState({ activeTab: newTab.key })}
           renderTab={this.renderTab}
           tabs={this.tabs}
         />
