@@ -16,18 +16,18 @@ export default class TabBottom extends React.Component {
 
   render() {
     return (
-      <View style={{ 
-            flexDirection: 'column',
-            backgroundColor: 'rgba(250, 255, 250, .95)', 
-            width: this.width, 
-            height: 400, 
-            padding: 12, 
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.8,
-            shadowRadius: 5,  
-            elevation: 10
-        }}
+      <View style={{
+        flexDirection: 'column',
+        backgroundColor: 'rgba(250, 255, 250, .95)',
+        width: this.width,
+        height: 400,
+        padding: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 5,
+        elevation: 10
+      }}
       >
         <FACEBOOK_LoginButton />
         <GOOGLE_LoginButton />
@@ -39,4 +39,3 @@ export default class TabBottom extends React.Component {
     )
   }
 }
-

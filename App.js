@@ -8,7 +8,7 @@ import Footer from './Components/Footer';
 import * as POSTS from './assets/POSTS.json';
 
 export default class App extends React.Component {
-  
+
   constructor(){
     super()
     this.state = {
@@ -17,12 +17,6 @@ export default class App extends React.Component {
       viewType: 'items',
       postId: 0,
       tabBottom: 'closed'
-    }
-  }
-
-  onSwipe(gestureName, gestureState) {
-    if(this.state.tabBottom !== 'closed'){
-      this.set_TabBottom('closed');
     }
   }
 
@@ -47,14 +41,14 @@ export default class App extends React.Component {
       this.showPostDetail(next_id);
     }
   }
-  
+
   showContent () {
     if(this.state.viewType == 'detail'){
       post = this.state.posts.find(post => post._id === this.state.postId);
-      return (<PostDetail 
+      return (<PostDetail
         id={post._id}
         media={post.media}
-        title={post.title} 
+        title={post.title}
         downvotes={post.downvotes}
         upvotes={post.upvotes}
         comments={post.comments}
@@ -70,11 +64,11 @@ export default class App extends React.Component {
         getItemCount={data => data.length}
         keyExtractor={(item, index) => item._id}
         initialNumToRender={1}
-        renderItem={ function({item}) { 
+        renderItem={ function({item}) {
           return <PostItem
             id={item._id}
             media={item.media}
-            title={item.title} 
+            title={item.title}
             downvotes={item.downvotes}
             upvotes={item.upvotes}
             comments={item.comments}
@@ -110,16 +104,14 @@ export default class App extends React.Component {
   render () {
     return (
       <View style={{ flex: 1, backgroundColor: '#ddd' , paddingTop: 24}}>
-         {this.TabBottom()}
-        {/* <GestureRecognizer 
-          onSwipe={(direction, state) => this.onSwipe(direction, state)}
-          config={{ velocityThreshold: 0.3, directionalOffsetThreshold: 80 }}
-          style={{ flex: 1 }}
-        > */}
-          <ScrollView ref={(scrollview) => this.scrollview = scrollview}>
-            {this.showContent()}
-          </ScrollView>
-        {/* </GestureRecognizer> */}
+        {this.TabBottom()}
+        <ScrollView
+          ref={(scrollview) => this.scrollview = scrollview}
+          onMomentumScrollBegin={() => this.set_TabBottom('closed')}
+        >
+        {this.showContent()}
+        </ScrollView>
+
         <Footer set_TabBottom={tab => this.set_TabBottom(tab)}/>
       </View>
     )
