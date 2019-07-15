@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, ScrollView, VirtualizedList, Image, Dimensions } from 'react-native';
+import { View, Text, ScrollView, VirtualizedList, Image, Dimensions, AsyncStorage } from 'react-native';
+import RCTNetworking from 'RCTNetworking';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
 import Footer from './Components/Footer';
 import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
+import { getUser } from './utils';
+
 
 export default class App extends React.Component {
 
@@ -18,10 +21,14 @@ export default class App extends React.Component {
       modalTab: "Closed",
       scrollPos: 0,
       width: 0,
-      height: 0
+      height: 0,
+      user: null
     }
   }
 
+  componentWillMount() {
+    getUser().then(user => console.log(user));
+  }
   componentDidMount () {
     this.setState({posts: POSTS.default});
   }
@@ -41,7 +48,6 @@ export default class App extends React.Component {
       this.showPostDetail(next_post);
     }
   }
-
 
   showContent () {
     if(this.state.viewType == 'detail'){

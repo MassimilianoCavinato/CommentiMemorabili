@@ -33,7 +33,7 @@ export default class Footer extends React.Component {
         key: 'User',
         icon: 'account',
         label: 'User',
-        barColor: '#19CCFF',
+        barColor: '#444444',
         pressColor: 'rgba(255, 255, 255, 0.16)'
       }
     ]

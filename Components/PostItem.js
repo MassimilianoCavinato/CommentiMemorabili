@@ -27,7 +27,6 @@ export default class PostItem extends React.Component {
   }
 
   render() {
-    console.log('rendering');
     return (
       <View style={{backgroundColor: '#fff', marginBottom: 16, flex: 1}}>
         <Category categoryname={this.props.category} />
