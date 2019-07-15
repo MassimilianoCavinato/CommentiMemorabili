@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, ScrollView, VirtualizedList } from 'react-native';
+import { View, Text, ScrollView, VirtualizedList, Image, Dimensions } from 'react-native';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
 import Footer from './Components/Footer';
+import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
 
 export default class App extends React.Component {
@@ -14,6 +15,10 @@ export default class App extends React.Component {
       posts: [],
       viewType: 'items',
       postId: 0,
+      modalTab: "Closed",
+      scrollPos: 0,
+      width: 0,
+      height: 0
     }
   }
 
@@ -24,20 +29,19 @@ export default class App extends React.Component {
   showPrev () {
    let curr_index = this.state.posts.findIndex(post => post._id === this.state.postId);
    if(curr_index !== 0){
-    let prev_index = curr_index - 1;
-    let prev_id = this.state.posts[prev_index]._id;
-    this.showPostDetail(prev_id);
+    let prev_post = this.state.posts[curr_index - 1];
+    this.showPostDetail(prev_post);
    }
   }
 
   showNext () {
     let curr_index = this.state.posts.findIndex(post => post._id === this.state.postId);
     if(curr_index < this.state.posts.length - 1){
-      let next_index = curr_index + 1;
-      let next_id = this.state.posts[next_index]._id;
-      this.showPostDetail(next_id);
+      let next_post = this.state.posts[curr_index + 1];
+      this.showPostDetail(next_post);
     }
   }
+
 
   showContent () {
     if(this.state.viewType == 'detail'){
@@ -50,8 +54,11 @@ export default class App extends React.Component {
         upvotes={post.upvotes}
         comments={post.comments}
         category={post.category}
+        width={this.state.width}
+        height={this.state.height}
         showPrev={() => this.showPrev()}
         showNext={() => this.showNext()}
+
       />);
     } else {
       let self = this;
@@ -70,26 +77,63 @@ export default class App extends React.Component {
             upvotes={item.upvotes}
             comments={item.comments}
             category={item.category}
-            showPostDetail={()=> self.showPostDetail(item._id)}
+            showPostDetail={()=> self.showPostDetail(item)}
           />
         }}
       />
     }
   }
 
-  showPostDetail (postId) {
-    this.setState({viewType: "detail", postId: postId, tabBottom: 'closed' });
-    this.scrollview.scrollTo({ y: 0 });
+  set_modalTab(modalTab) {
+    this.setState({modalTab: modalTab});
   }
+
+  showPostItems () {
+    this.setState({viewType: 'items', modalTab: "Closed"}, () => {
+      setTimeout(() => this.refs._scrollView.scrollTo({x: 0, y: this.state.scrollPos, animated: false}), 1000);
+    });
+  }
+
+  showPostDetail (post) {
+    Image.getSize(post.media, (srcWidth, srcHeight) => {
+      let maxHeight = Dimensions.get('window').height;
+      let maxWidth = Dimensions.get('window').width;
+      let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+      let width = maxWidth;
+      let height = srcHeight * ratio;
+      this.setState({
+        viewType: "detail",
+        postId: post._id,
+        modalTab: "Closed",
+        height: height,
+        width: width
+      });
+      this.refs._scrollView.scrollTo({x: 0, y: 0, animated: false});
+    }, error => {
+      console.log('error:', error);
+    });
+  }
+
 
   render () {
     return (
       <View style={{ flex: 1, backgroundColor: '#ddd'}}>
         <View style={{ backgroundColor: '#6EC24C', height: 22 }} />
-        <ScrollView  ref={(scrollview) => this.scrollview = scrollview}>
+        <ScrollView
+          ref='_scrollView'
+          onMomentumScrollEnd={(e) => {
+              if(this.state.viewType === 'items'){
+                this.setState({scrollPos: e.nativeEvent.contentOffset.y, modalTab: "Closed"})
+              }
+            }}
+        >
           {this.showContent()}
         </ScrollView>
-        <Footer setModal={tab => this.setModal(tab)}/>
+        <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />
+        <Footer
+          set_modalTab={modalTab => this.set_modalTab(modalTab)}
+          showPostItems={() => this.showPostItems()}
+        />
       </View>
     )
   }

@@ -1,7 +1,8 @@
 import React from 'react';
+
 import { View, Text, TextInput } from 'react-native';
 
-export default class UserLogin extends React.Component {
+export default class UserRegistration extends React.Component {
   constructor(props){
     super(props);
   }

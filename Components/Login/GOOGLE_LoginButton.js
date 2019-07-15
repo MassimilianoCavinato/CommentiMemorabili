@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { SocialIcon } from 'react-native-elements';
 
-export default class Google_LoginButton extends Component {
-  
+export default class GOOGLE_LoginButton extends Component {
+
     constructor(props){
       super(props);
     }

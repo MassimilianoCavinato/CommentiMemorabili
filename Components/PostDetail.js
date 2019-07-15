@@ -10,70 +10,60 @@ import Category from './Category';
 import PostComment from './PostComment';
 import * as COMMENTS from '../assets/COMMENTS.json';
 
-
 export default class PostItem extends React.Component {
 
   constructor(props){
     super(props)
-    this.state = {comments: []};
+    this.state = {
+      comments: []
+    };
   }
 
   componentDidMount(){
-    this.setState({comments: COMMENTS.default});
+    this.loadComments();
+  }
+
+  componentWillReceiveProps(){
+    this.loadComments();
+  }
+  loadComments(){
+    this.setState({comments: shuffle(COMMENTS.default)});
   }
 
   render() {
     return (
-      <View style={{backgroundColor: '#fff', marginBottom: 16 }}>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
-          <TouchableOpacity onPress={this.props.showPrev}>
-            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
-              <Icon size={32} color="gray" name={"arrow-left-bold"} />
-              <Text style={{ fontSize: 24, color: 'gray' }}>PREV</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.props.showNext}>
-            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
-              <Text style={{ fontSize: 24, color: 'gray' }}>NEXT</Text>
-              <Icon size={32} color="gray" name={"arrow-right-bold"} />
-            </View>
-          </TouchableOpacity>
-        </View>
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
         <Category categoryname={this.props.category} />
-        <Text style={{fontWeight: 'bold', fontSize: 22, paddingLeft: 4 }}>{this.props.title}</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 16, paddingLeft: 4 }}>{this.props.title}</Text>
         <ImageZoom
-          cropWidth={Dimensions.get('window').width}
-          cropHeight={500}
-          imageWidth={Dimensions.get('window').width}
-          imageHeight={500}
+          cropWidth={this.props.width}
+          cropHeight={380}
+          imageWidth={this.props.width}
+          imageHeight={380}
           style={{ backgroundColor: '#444' }}
         >
-          <Image style={{minHeight: 500}} resizeMode='contain' source={{uri: this.props.media}}/>
+          <Image
+            style={{width: this.props.width, height: 380}}
+            source={{ uri: this.props.media }}
+            resizeMethod='scale'
+            resizeMode='contain'
+          />
         </ImageZoom>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-          <UpVotesCounter count={this.props.upvotes} style={{paddingRight: 20}}/>
-          <DownVotesCounter count={this.props.downvotes}/>
-          <CommentsCounter count={this.props.comments}/>
-        </View>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly'}}>
-
           <TouchableOpacity onPress={this.props.showPrev}>
-            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
-              <Icon size={32} color="gray" name={"arrow-left-bold"} />
-              <Text style={{ fontSize: 24, color: 'gray' }}>PREV</Text>
-            </View>
+            <Icon size={44} color="gray" opacity={0.5} name={"arrow-left-drop-circle"} />
           </TouchableOpacity>
-
+          <View  style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+            <UpVotesCounter count={this.props.upvotes} style={{paddingRight: 20}}/>
+            <DownVotesCounter count={this.props.downvotes}/>
+            <CommentsCounter count={this.props.comments}/>
+          </View>
           <TouchableOpacity onPress={this.props.showNext}>
-            <View  style={{flex: 1, flexDirection: 'row',  justifyContent: 'flex-end'}}>
-              <Text style={{ fontSize: 24, color: 'gray' }}>NEXT</Text>
-              <Icon size={32} color="gray" name={"arrow-right-bold"} />
-            </View>
+            <Icon size={44} color="gray" opacity={0.5} name={"arrow-right-drop-circle"} />
           </TouchableOpacity>
-
         </View>
         <VirtualizedList
-          data={shuffle(this.state.comments)}
+          data={this.state.comments}
           getItem={(data, index) => data[index]}
           getItemCount={data => data.length}
           keyExtractor={(item, index) => item._id}

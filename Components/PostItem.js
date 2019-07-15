@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
 import UpVotesCounter from './UpVotesCounter';
 import DownVotesCounter from './DownVotesCounter';
 import CommentsCounter from './CommentsCounter';
 import Category from './Category';
 
 export default class PostItem extends React.Component {
-  
+
   constructor(props){
     super(props);
     this.state = {
@@ -27,6 +27,7 @@ export default class PostItem extends React.Component {
   }
 
   render() {
+    console.log('rendering');
     return (
       <View style={{backgroundColor: '#fff', marginBottom: 16, flex: 1}}>
         <Category categoryname={this.props.category} />
@@ -42,7 +43,7 @@ export default class PostItem extends React.Component {
           />
         </TouchableOpacity>
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-          <UpVotesCounter count={this.props.upvotes}/> 
+          <UpVotesCounter count={this.props.upvotes}/>
           <DownVotesCounter count={this.props.downvotes}/>
           <CommentsCounter count={this.props.comments}/>
         </View>
@@ -50,4 +51,3 @@ export default class PostItem extends React.Component {
     )
   }
 }
-
