@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import UserImage from './UserImage';
 export default class PostComment extends React.Component {
-  
+
   constructor(props){
     super(props)
   }
@@ -10,17 +11,12 @@ export default class PostComment extends React.Component {
   render() {
     return (
       <View style={{margin: 2, borderRadius: 16 }}>
-        <LinearGradient
-          colors={['#3D8C1C', '#50B426']}
-          start={[0,0]}
-          end={[1,1]}
-          style={{ padding: 4, borderRadius: 4 }}
-        >
-          <Text style={{fontWeight: 'bold', fontSize: 18, color: 'white'}}>{this.props.user.name}</Text>
-          <Text style={{fontSize: 16, color: 'white', paddingLeft: 4 }}>{this.props.text}</Text>
-        </LinearGradient>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <UserImage radius={30} uri={this.props.profilePic} />
+          <Text style={{fontWeight: 'bold', fontSize: 18, paddingLeft: 4 }}>{this.props.user.name}</Text>
+        </View>
+        <Text style={{fontSize: 16, paddingLeft: 8, }}>{this.props.text}</Text>
       </View>
     )
   }
 }
-

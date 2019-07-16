@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, VirtualizedList, Image, Dimensions, AsyncStorage } from 'react-native';
-import RCTNetworking from 'RCTNetworking';
+import { View, Text, ScrollView, List, FlatList, Image, Dimensions, AsyncStorage } from 'react-native';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
 import Footer from './Components/Footer';
 import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
 import { getUser } from './utils';
-
+import UserImage from './Components/UserImage';
 
 export default class App extends React.Component {
 
@@ -29,6 +28,7 @@ export default class App extends React.Component {
   componentWillMount() {
     getUser().then(user => console.log(user));
   }
+
   componentDidMount () {
     this.setState({posts: POSTS.default});
   }
@@ -50,43 +50,44 @@ export default class App extends React.Component {
   }
 
   showContent () {
+    
     if(this.state.viewType == 'detail'){
       post = this.state.posts.find(post => post._id === this.state.postId);
-      return (<PostDetail
-        id={post._id}
-        media={post.media}
-        title={post.title}
-        downvotes={post.downvotes}
-        upvotes={post.upvotes}
-        comments={post.comments}
-        category={post.category}
-        width={this.state.width}
-        height={this.state.height}
-        showPrev={() => this.showPrev()}
-        showNext={() => this.showNext()}
-
-      />);
-    } else {
-      let self = this;
-      return <VirtualizedList
-        data={this.state.posts}
-        getItem={(data, index) => data[index]}
-        getItemCount={data => data.length}
-        keyExtractor={(item, index) => item._id}
-        initialNumToRender={1}
-        renderItem={ function({item}) {
-          return <PostItem
-            id={item._id}
-            media={item.media}
-            title={item.title}
-            downvotes={item.downvotes}
-            upvotes={item.upvotes}
-            comments={item.comments}
-            category={item.category}
-            showPostDetail={()=> self.showPostDetail(item)}
-          />
-        }}
+      return (
+        <PostDetail
+          id={post._id}
+          media={post.media}
+          title={post.title}
+          downvotes={post.downvotes}
+          upvotes={post.upvotes}
+          comments={post.comments}
+          category={post.category}
+          width={this.state.width}
+          height={this.state.height}
+          showPrev={() => this.showPrev()}
+          showNext={() => this.showNext()}
       />
+      );
+    } else {
+      return (
+        <FlatList
+          ref='_scrollView'
+          data={this.state.posts}
+          keyExtractor={(item, index) => item._id}
+          renderItem={ ({item}) => (
+            <PostItem
+              id={item._id}
+              media={item.media}
+              title={item.title}
+              downvotes={item.downvotes}
+              upvotes={item.upvotes}
+              comments={item.comments}
+              category={item.category}
+              showPostDetail={()=> this.showPostDetail(item)}
+            />
+          )}
+        />
+      );
     }
   }
 
@@ -95,9 +96,7 @@ export default class App extends React.Component {
   }
 
   showPostItems () {
-    this.setState({viewType: 'items', modalTab: "Closed"}, () => {
-      setTimeout(() => this.refs._scrollView.scrollTo({x: 0, y: this.state.scrollPos, animated: false}), 1000);
-    });
+    this.setState({viewType: 'items', modalTab: "Closed"});
   }
 
   showPostDetail (post) {
@@ -114,7 +113,6 @@ export default class App extends React.Component {
         height: height,
         width: width
       });
-      this.refs._scrollView.scrollTo({x: 0, y: 0, animated: false});
     }, error => {
       console.log('error:', error);
     });
@@ -124,17 +122,8 @@ export default class App extends React.Component {
   render () {
     return (
       <View style={{ flex: 1, backgroundColor: '#ddd'}}>
-        <View style={{ backgroundColor: '#6EC24C', height: 22 }} />
-        <ScrollView
-          ref='_scrollView'
-          onMomentumScrollEnd={(e) => {
-              if(this.state.viewType === 'items'){
-                this.setState({scrollPos: e.nativeEvent.contentOffset.y, modalTab: "Closed"})
-              }
-            }}
-        >
-          {this.showContent()}
-        </ScrollView>
+        <View style={{ backgroundColor: '#388E3C', height: 22 }} />
+        {this.showContent()}
         <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />
         <Footer
           set_modalTab={modalTab => this.set_modalTab(modalTab)}

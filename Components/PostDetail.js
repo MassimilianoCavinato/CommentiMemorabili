@@ -1,6 +1,6 @@
 import React from 'react';
 import shuffle from 'shuffle-array';
-import {Text, View, Image, Dimensions, TouchableOpacity, VirtualizedList } from 'react-native';
+import {Text, Animated, View, Image, Dimensions, TouchableOpacity, FlatList, Animate, Easing } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import UpVotesCounter from './UpVotesCounter';
@@ -15,7 +15,8 @@ export default class PostItem extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      comments: []
+      comments: [],
+      animation: new Animated.Value(350)
     };
   }
 
@@ -24,10 +25,39 @@ export default class PostItem extends React.Component {
   }
 
   componentWillReceiveProps(){
+    Animated.timing(this.state.animation, {
+        toValue: 350,
+        duration: 0
+    }).start();
+    this.refs.commentList.scrollToOffset({offset: 0, animated: false});
     this.loadComments();
+    this.setState({animation: new Animated.Value(350)});
   }
+
+  setOffset(e){
+    this.offset = e.nativeEvent.contentOffset.y;
+  }
+
+  expandSlider(e){
+    let delta_offset = e.nativeEvent.contentOffset.y - this.offset;
+    if(delta_offset >= 30){
+      Animated.timing(this.state.animation, {
+          toValue: 50,
+          duration: 300
+      }).start();
+    }
+  }
+
+  reduceSlider(){
+    Animated.timing(this.state.animation, {
+        toValue: 350,
+        duration: 300
+    }).start();
+  }
+
   loadComments(){
-    this.setState({comments: shuffle(COMMENTS.default)});
+    let comments = COMMENTS.default.map(c => Object.assign({}, c, { profile_picture: 'https://picsum.photos/id/'+Math.floor(Math.random() * 301)+'/300/300' }))
+    this.setState({comments: shuffle(comments)});
   }
 
   render() {
@@ -35,47 +65,56 @@ export default class PostItem extends React.Component {
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         <Category categoryname={this.props.category} />
         <Text style={{fontWeight: 'bold', fontSize: 16, paddingLeft: 4 }}>{this.props.title}</Text>
-        <ImageZoom
-          cropWidth={this.props.width}
-          cropHeight={380}
-          imageWidth={this.props.width}
-          imageHeight={380}
-          style={{ backgroundColor: '#444' }}
+        <Animated.View
+          onMoveShouldSetResponder={() => this.reduceSlider()}
+          style={{ height: this.state.animation }}
         >
-          <Image
-            style={{width: this.props.width, height: 380}}
-            source={{ uri: this.props.media }}
-            resizeMethod='scale'
-            resizeMode='contain'
-          />
-        </ImageZoom>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-          <TouchableOpacity onPress={this.props.showPrev}>
-            <Icon size={44} color="gray" opacity={0.5} name={"arrow-left-drop-circle"} />
-          </TouchableOpacity>
-          <View  style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <UpVotesCounter count={this.props.upvotes} style={{paddingRight: 20}}/>
-            <DownVotesCounter count={this.props.downvotes}/>
-            <CommentsCounter count={this.props.comments}/>
-          </View>
-          <TouchableOpacity onPress={this.props.showNext}>
-            <Icon size={44} color="gray" opacity={0.5} name={"arrow-right-drop-circle"} />
-          </TouchableOpacity>
-        </View>
-        <VirtualizedList
-          data={this.state.comments}
-          getItem={(data, index) => data[index]}
-          getItemCount={data => data.length}
-          keyExtractor={(item, index) => item._id}
-          initialNumToRender={1}
-          renderItem={ function({item}) {
-            return <PostComment
-              id={item._id}
-              user={item.user}
-              text={item.text}
+          <ImageZoom
+            cropWidth={this.props.width}
+            cropHeight={350}
+            imageWidth={this.props.width}
+            imageHeight={350}
+            style={{ backgroundColor: '#eee' }}
+          >
+            <Image
+              style={{width: this.props.width, height: 350}}
+              source={{ uri: this.props.media }}
+              resizeMethod='scale'
+              resizeMode='contain'
             />
-          }}
-        />
+          </ImageZoom>
+        </Animated.View>
+        <View  style={{flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <TouchableOpacity onPress={this.props.showPrev}>
+              <Icon size={44} color="gray" opacity={0.5} name={"arrow-left-drop-circle"} />
+            </TouchableOpacity>
+            <View  style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+              <UpVotesCounter count={this.props.upvotes} style={{paddingRight: 20}}/>
+              <DownVotesCounter count={this.props.downvotes}/>
+              <CommentsCounter count={this.props.comments}/>
+            </View>
+            <TouchableOpacity onPress={this.props.showNext}>
+              <Icon size={44} color="gray" opacity={0.5} name={"arrow-right-drop-circle"} />
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            ref='commentList'
+            onScrollBeginDrag={(e) => this.setOffset(e)}
+            onScrollEndDrag={(e) => this.expandSlider(e)}
+            ItemSeparatorComponent={() => <Text style={{textAlign: 'center', fontSize: 24, color: '#888'}}>.  .  .  .  .</Text>}
+            data={this.state.comments}
+            keyExtractor={(item, index) => item._id}
+            renderItem={ ({item}) => {
+              return <PostComment
+                id={item._id}
+                user={item.user}
+                text={item.text}
+                profilePic={item.profile_picture}
+              />
+            }}
+          />
+        </View>
       </View>
     )
   }

@@ -11,28 +11,28 @@ export default class Footer extends React.Component {
       {
         key: 'Fresh',
         icon: 'flash-circle',
-        label: 'Fresh',
+        label: '',
         barColor: '#388E3C',
         pressColor: 'rgba(255, 255, 255, 0.16)'
       },
       {
         key: 'Hot',
         icon: 'star-face',
-        label: 'Hot',
+        label: '',
         barColor: '#B71C1C',
         pressColor: 'rgba(255, 255, 255, 0.16)'
       },
       {
         key: 'Category',
         icon: 'menu',
-        label: 'Category',
+        label: '',
         barColor: '#19CCFF',
         pressColor: 'rgba(255, 255, 255, 0.16)'
       },
       {
         key: 'User',
         icon: 'account',
-        label: 'User',
+        label: '',
         barColor: '#444444',
         pressColor: 'rgba(255, 255, 255, 0.16)'
       }
@@ -40,7 +40,7 @@ export default class Footer extends React.Component {
   }
 
   renderIcon = icon => ({ isActive }) => (
-    <Icon size={24} color="white" name={icon} />
+    <Icon size={14} color="white" name={icon} />
   )
 
   renderTab = ({ tab, isActive }) => (
@@ -53,22 +53,23 @@ export default class Footer extends React.Component {
   )
 
   onTabPress = (tab) => {
-    if(tab === "Hot"){
-      this.props.showPostItems();
-    }else{
-      this.props.set_modalTab(tab)
-    }
+    setTimeout(() => {
+      if(tab === "Hot"){
+        this.props.showPostItems();
+      }else{
+        this.props.set_modalTab(tab)
+      }
+    }, 400);
   }
 
   render() {
     return (
-      <View>
-        <BottomNavigation
-          onTabPress={newTab => this.onTabPress(newTab.key)}
-          renderTab={this.renderTab}
-          tabs={this.tabs}
-        />
-      </View>
+      <BottomNavigation
+        style={{ height: 32 }}
+        onTabPress={newTab => this.onTabPress(newTab.key)}
+        renderTab={this.renderTab}
+        tabs={this.tabs}
+      />
     )
   }
 }
