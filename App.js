@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, ScrollView, List, FlatList, Image, Dimensions, AsyncStorage } from 'react-native';
+import {Animated, View, Text, ScrollView, List, FlatList, Image, Dimensions, AsyncStorage } from 'react-native';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
-import Footer from './Components/Footer';
+import TopNavigator from './Components/TopNavigator';
 import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
 import { getUser } from './utils';
@@ -121,14 +122,15 @@ export default class App extends React.Component {
 
   render () {
     return (
-      <View style={{ flex: 1, backgroundColor: '#ddd'}}>
-        <View style={{ backgroundColor: '#388E3C', height: 22 }} />
-        {this.showContent()}
-        <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />
-        <Footer
+      <View
+        style={{ flex: 1, backgroundColor: '#ddd'}}
+      >
+        <TopNavigator
           set_modalTab={modalTab => this.set_modalTab(modalTab)}
           showPostItems={() => this.showPostItems()}
         />
+        {this.showContent()}
+        <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />
       </View>
     )
   }

@@ -5,6 +5,7 @@ import INSTAGRAM_LoginButton from './Login/INSTAGRAM_LoginButton';
 import COMMENTIMEMORABILI_LoginButton from './Login/COMMENTIMEMORABILI_LoginButton';
 import { View, Text, Image, Button } from 'react-native';
 import { getUser, setUser, unsetUser } from '../utils';
+import RCTNetworking from 'RCTNetworking';
 
 export default class UserTab extends React.Component {
   constructor(props){
@@ -16,6 +17,7 @@ export default class UserTab extends React.Component {
   }
 
   componentDidMount(){
+    RCTNetworking.clearCookies();
     this.getUserInfo();
   }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import shuffle from 'shuffle-array';
-import {Text, Animated, View, Image, Dimensions, TouchableOpacity, FlatList, Animate, Easing } from 'react-native';
+import {Text, Animated, View, Image, TouchableOpacity, FlatList, Animate, Easing } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import UpVotesCounter from './UpVotesCounter';
