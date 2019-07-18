@@ -24,7 +24,6 @@ export default class App extends React.Component {
       user: null,
       navigator: true
     }
-    console.log("App constructed");
   }
 
   componentWillMount() {
@@ -57,9 +56,20 @@ export default class App extends React.Component {
 
   handle_ScrollEndDrag(e){
     let delta_offset = e.nativeEvent.contentOffset.y - this.offset;
-    if(delta_offset <= -150 && this.offset >  800){
-      this.setState({navigator: true});
+    if(this.offset >  300){
+      if(delta_offset <= -100 && this.state.navigator === false){
+        this.setState({navigator: true});
+      }
+      else if(delta_offset >= 100 && this.state.navigator === true){
+        this.setState({navigator: false});
+      }
     }
+    else{
+      if(this.state.navigator === false){
+        this.setState({navigator: true});
+      }
+    }
+   
   }
 
   showContent () {
@@ -134,7 +144,6 @@ export default class App extends React.Component {
       console.log('error:', error);
     });
   }
-
 
   render () {
     return (

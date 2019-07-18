@@ -30,7 +30,8 @@ export default class PostItem extends React.Component {
   }
 
   renderBanner(){
-    if(this.props.index % 6 === 0 && this.props.index >5){
+    
+    if(this.props.index % 4 === 0 && this.props.index != 0){
       return <View>
         <ListSeparator_0 />
         <BannerLarge />

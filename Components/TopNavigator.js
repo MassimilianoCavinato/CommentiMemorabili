@@ -15,8 +15,8 @@ export default class TopNavigator extends React.Component {
   }
 
   componentWillReceiveProps(props){
-    console.log('receiving props', typeof props.navigator,  props)
-    this.setState({visible: props.navigator});
+
+    this.setState({visible: props.visible});
   }
 
   onTabPress(tab) {
@@ -34,9 +34,7 @@ export default class TopNavigator extends React.Component {
   render() {
     console.log(this.state.visible, typeof this.state.visible);
     if(this.state.visible){
-      console.log('should be visible');
       return (
-      
         <View style={{ backgroundColor: 'green', height: 40}}>
           <TopNavigatorTabs onTabPress={tab => this.onTabPress(tab)} />
         </View>

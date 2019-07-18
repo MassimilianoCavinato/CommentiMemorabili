@@ -64,7 +64,7 @@ export default class PostItem extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 40}}>
+      <View style={{flex: 1, backgroundColor: '#fff'}}>
         <Category categoryname={this.props.category} />
         <Text style={{fontWeight: 'bold', fontSize: 16, paddingLeft: 4 }}>{this.props.title}</Text>
         <Animated.View
@@ -86,7 +86,7 @@ export default class PostItem extends React.Component {
             />
           </ImageZoom>
         </Animated.View>
-        <View  style={{flex: 1, backgroundColor: 'yellow' }}>
+        <View  style={{flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.97)', }}>
           <View style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
