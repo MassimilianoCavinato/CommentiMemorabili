@@ -8,6 +8,7 @@ import DownVotesCounter from './DownVotesCounter';
 import CommentsCounter from './CommentsCounter';
 import Category from './Category';
 import PostComment from './PostComment';
+import ListSeparator_0 from './ListSeparator_0';
 import * as COMMENTS from '../assets/COMMENTS.json';
 
 export default class PostItem extends React.Component {
@@ -85,7 +86,11 @@ export default class PostItem extends React.Component {
           </ImageZoom>
         </Animated.View>
         <View  style={{flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            }}
+          >
             <TouchableOpacity onPress={this.props.showPrev}>
               <Icon size={44} color="gray" opacity={0.5} name={"arrow-left-drop-circle"} />
             </TouchableOpacity>
@@ -102,7 +107,7 @@ export default class PostItem extends React.Component {
             ref='commentList'
             onScrollBeginDrag={(e) => this.setOffset(e)}
             onScrollEndDrag={(e) => this.expandSlider(e)}
-            ItemSeparatorComponent={() => <Text style={{textAlign: 'center', fontSize: 24, color: '#888'}}>.  .  .  .  .</Text>}
+            ItemSeparatorComponent={() => <ListSeparator_0 />}
             data={this.state.comments}
             keyExtractor={(item, index) => item._id}
             renderItem={ ({item}) => {

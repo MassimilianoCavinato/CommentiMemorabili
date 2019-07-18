@@ -4,9 +4,11 @@ import { Alert, View } from 'react-native';
 import * as Facebook from 'expo-facebook';
 
 export default class FACEBOOK_LoginButton extends Component {
-  
-    _handleFacebookLogin = async () => {
+
+  _handleFacebookLogin = async () => {
+    this.props.onButtonPress("facebook_lgin");
     try {
+
       const { type, token } = await Facebook.logInWithReadPermissionsAsync(
         '1201211719949057', // Replace with your own app id in standalone app
         { permissions: ['public_profile'] }
@@ -44,7 +46,7 @@ export default class FACEBOOK_LoginButton extends Component {
       );
     }
   };
-  
+
   render() {
     return (
       <SocialIcon

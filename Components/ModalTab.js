@@ -7,7 +7,8 @@ export default class ModalTab extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      modalTab: "Closed"
+      modalTab: "Closed",
+      swipeDirections: ['up', 'left', 'down', 'right']
     }
   }
 
@@ -15,21 +16,27 @@ export default class ModalTab extends React.Component {
       this.setState({modalTab: props.modalTab});
   }
 
-  renderTab() {
-    if(this.state.modalTab === 'User'){
-      return <UserTab />
+  onButtonPress(btn){
+    switch(btn){
+      case "facebook_login": this.setState({modalTab: "Closed"}); break;
+      case "instagram_login": this.setState({swipeDirections: []}); break;
+      case "instagram_login_close": this.setState({swipeDirections: ['up', 'left', 'down', 'right']}); break;
     }
-    else{
-      return <UserTab />
-    }
+
   }
+
+  renderTab() {
+    return <UserTab onButtonPress={(btn)=>{this.onButtonPress(btn)}}/>
+  }
+
 
   render() {
     return (
       <Modal
         isVisible={this.state.modalTab !== "Closed"}
-        swipeDirection={['up', 'left', 'down', 'right']}
-        swipeThreshold={ 100 }
+        swipeDirection={this.state.swipeDirections}
+        swipeThreshold={ 200 }
+        animationOutTiming={100}
         onSwipeComplete={() => this.setState({modalTab: "Closed"})}
       >
       {this.renderTab()}

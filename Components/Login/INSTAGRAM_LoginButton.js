@@ -5,7 +5,7 @@ import InstagramLogin from 'react-native-instagram-login';
 import axios from 'axios';
 
 export default class INSTAGRAM_LoginButton extends Component {
-  
+
     constructor(props){
       super(props);
     }
@@ -32,6 +32,12 @@ export default class INSTAGRAM_LoginButton extends Component {
         });
     }
 
+    onPress() {
+      this.props.onButtonPress();
+      this.refs.instagramLogin.show();
+    }
+
+
     render() {
         return (
             <View>
@@ -40,15 +46,22 @@ export default class INSTAGRAM_LoginButton extends Component {
                     raised
                     type='instagram'
                     title="Login with Instagram"
-                    onPress={()=>  this.refs.instagramLogin.show()}
+                    onPress={()=> {
+                      this.props.onButtonPress('instagram_login');
+                      this.refs.instagramLogin.show();
+                    }}
                 />
                 <InstagramLogin
                     ref='instagramLogin'
                     clientId='4ecf8d9848b248d39c7c53c3bd7d84ad'
                     redirectUrl='http://instagram.com'
                     scopes={['public_content']}
-                    onLoginSuccess={ (token) => this.getUserInfo(token)}
-                    onLoginFailure={(data) => console.log(data)}
+                    onLoginSuccess={ (token) => {
+                      this.props.onButtonPress('instagram_login_close');
+                      this.getUserInfo(token);
+                    }}
+                    onClose={()=>this.props.onButtonPress('instagram_login_close')}
+                    onLoginFailure={(data) => this.props.onButtonPress('instagram_login_close')}
                 />
             </View>
         )

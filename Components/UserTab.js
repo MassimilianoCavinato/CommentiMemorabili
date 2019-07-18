@@ -17,7 +17,7 @@ export default class UserTab extends React.Component {
   }
 
   componentDidMount(){
-    RCTNetworking.clearCookies();
+    RCTNetworking.clearCookies(()=>{});
     this.getUserInfo();
   }
 
@@ -65,13 +65,14 @@ export default class UserTab extends React.Component {
   }
 
   showUserTab() {
+
     if(this.state.user === null){
       return (
         <View>
           <COMMENTIMEMORABILI_LoginButton setUserInfo={(userInfo) => this.setUserInfo(userInfo)} />
-          <FACEBOOK_LoginButton  setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
-          <GOOGLE_LoginButton  setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
-          <INSTAGRAM_LoginButton  setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
+          <FACEBOOK_LoginButton onButtonPress={(btn)=>this.props.onButtonPress(btn)} setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
+          <GOOGLE_LoginButton onButtonPress={(btn)=>this.props.onButtonPress(btn)} setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
+          <INSTAGRAM_LoginButton onButtonPress={(btn)=>this.props.onButtonPress(btn)} setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
         </View>
       )
     }

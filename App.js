@@ -8,6 +8,7 @@ import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
 import { getUser } from './utils';
 import UserImage from './Components/UserImage';
+import ListSeparator_0 from './Components/ListSeparator_0';
 
 export default class App extends React.Component {
 
@@ -51,7 +52,7 @@ export default class App extends React.Component {
   }
 
   showContent () {
-    
+
     if(this.state.viewType == 'detail'){
       post = this.state.posts.find(post => post._id === this.state.postId);
       return (
@@ -74,6 +75,7 @@ export default class App extends React.Component {
         <FlatList
           ref='_scrollView'
           data={this.state.posts}
+          ItemSeparatorComponent={() => <ListSeparator_0 />}
           keyExtractor={(item, index) => item._id}
           renderItem={ ({item}) => (
             <PostItem
@@ -125,6 +127,11 @@ export default class App extends React.Component {
       <View
         style={{ flex: 1, backgroundColor: '#ddd'}}
       >
+        <View style={{
+          backgroundColor: 'green',
+          height: 24
+        }}
+        />
         <TopNavigator
           set_modalTab={modalTab => this.set_modalTab(modalTab)}
           showPostItems={() => this.showPostItems()}

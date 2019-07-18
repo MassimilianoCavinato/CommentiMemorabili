@@ -28,19 +28,19 @@ export default class PostItem extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#fff', marginBottom: 16, flex: 1}}>
-        <Category categoryname={this.props.category} />
-        <Text style={{fontWeight: 'bold', fontSize: 18, paddingLeft: 4 }}>{this.props.title}</Text>
+      <View style={{backgroundColor: '#fff', flex: 1}}>
         <TouchableOpacity
            onPress={() => this.props.showPostDetail(this.props.id)}
         >
-          <Image
-            style={{width: this.state.width, height: this.state.height }}
-            source={{ uri: this.props.media }}
-            resizeMethod='scale'
-            resizeMode='contain'
-          />
+        <Category categoryname={this.props.category} />
+        <Text style={{fontWeight: 'bold', fontSize: 18, paddingLeft: 4 }}>{this.props.title}</Text>
         </TouchableOpacity>
+        <Image
+          style={{width: this.state.width, height: this.state.height }}
+          source={{ uri: this.props.media }}
+          resizeMethod='scale'
+          resizeMode='contain'
+        />
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
           <UpVotesCounter count={this.props.upvotes}/>
           <DownVotesCounter count={this.props.downvotes}/>

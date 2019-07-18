@@ -1,28 +1,47 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
-
+import TopNavigatorTabs from './TopNavigatorTabs';
 
 export default class TopNavigator extends React.Component {
+
   constructor(props){
     super(props);
+    // "Tabs", "PostDetail"
+    this.state = {
+      type: "Tabs",
+    }
   }
 
   onTabPress(tab) {
+    console.log(tab);
     if(tab === "Hot"){
       this.props.showPostItems();
-      Dimensions.get('window').width;
+    }
+    else if(tab === "Account"){
+      this.props.set_modalTab("Account");
     }
     else{
-      this.props.set_modalTab(tab);
+      this.props.set_modalTab("Account");
     }
   }
 
+
   render() {
     return (
-      <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-evenly', backgroundColor: 'green', position: 'absolute', paddingTop: 24, top: 0, width: Dimensions.get('window').width, zIndex:10}}>
-        <Icon size={24} color="white" name={'flash-circle'} onPress={()=>this.onTabPress('Hot')}/>
-        <Icon size={24} color="white" name={'account'}  onPress={()=>this.onTabPress('User')}/>
+      <View style={{
+        position: "absolute",
+        top: 24,
+        left:4,
+        right:4,
+        zIndex:1,
+        height: 36,
+        backgroundColor: 'rgba(0,130,10,.98)',
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16
+      }}
+      >
+        <TopNavigatorTabs onTabPress={tab => this.onTabPress(tab)} />
       </View>
     )
   }
