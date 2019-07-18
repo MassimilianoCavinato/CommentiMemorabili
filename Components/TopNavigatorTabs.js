@@ -13,6 +13,7 @@ export default class TopNavigatorTabs extends React.Component {
     return (
       <View style={{
         flex: 1,
+        height: 50,
         width: 'auto',
         flexDirection: 'row',
         justifyContent: 'space-evenly',

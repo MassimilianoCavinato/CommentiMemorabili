@@ -1,13 +1,11 @@
 import React from 'react';
-import {Animated, View, Text, ScrollView, List, FlatList, Image, Dimensions, AsyncStorage } from 'react-native';
-import GestureRecognizer from 'react-native-swipe-gestures';
+import {Animated, View, Text, FlatList, Image, Dimensions } from 'react-native';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
 import TopNavigator from './Components/TopNavigator';
 import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
 import { getUser } from './utils';
-import UserImage from './Components/UserImage';
 import ListSeparator_0 from './Components/ListSeparator_0';
 
 export default class App extends React.Component {
@@ -23,8 +21,10 @@ export default class App extends React.Component {
       scrollPos: 0,
       width: 0,
       height: 0,
-      user: null
+      user: null,
+      navigator: true
     }
+    console.log("App constructed");
   }
 
   componentWillMount() {
@@ -48,6 +48,17 @@ export default class App extends React.Component {
     if(curr_index < this.state.posts.length - 1){
       let next_post = this.state.posts[curr_index + 1];
       this.showPostDetail(next_post);
+    }
+  }
+
+  setOffset(e){
+    this.offset = e.nativeEvent.contentOffset.y;
+  }
+
+  handle_ScrollEndDrag(e){
+    let delta_offset = e.nativeEvent.contentOffset.y - this.offset;
+    if(delta_offset <= -150 && this.offset >  800){
+      this.setState({navigator: true});
     }
   }
 
@@ -76,9 +87,12 @@ export default class App extends React.Component {
           ref='_scrollView'
           data={this.state.posts}
           ItemSeparatorComponent={() => <ListSeparator_0 />}
-          keyExtractor={(item, index) => item._id}
-          renderItem={ ({item}) => (
+          keyExtractor={(item) => item._id}
+          onScrollBeginDrag={(e) => this.setOffset(e)}
+          onScrollEndDrag={(e) => this.handle_ScrollEndDrag(e)}
+          renderItem={ ({item, index}) => (
             <PostItem
+              index={index}
               id={item._id}
               media={item.media}
               title={item.title}
@@ -135,6 +149,7 @@ export default class App extends React.Component {
         <TopNavigator
           set_modalTab={modalTab => this.set_modalTab(modalTab)}
           showPostItems={() => this.showPostItems()}
+          visible={this.state.navigator}
         />
         {this.showContent()}
         <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />

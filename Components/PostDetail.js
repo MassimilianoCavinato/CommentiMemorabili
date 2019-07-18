@@ -10,6 +10,7 @@ import Category from './Category';
 import PostComment from './PostComment';
 import ListSeparator_0 from './ListSeparator_0';
 import * as COMMENTS from '../assets/COMMENTS.json';
+import BannerSlim from './BannerSlim';
 
 export default class PostItem extends React.Component {
 
@@ -17,7 +18,7 @@ export default class PostItem extends React.Component {
     super(props)
     this.state = {
       comments: [],
-      animation: new Animated.Value(350)
+      animation: new Animated.Value(100)
     };
   }
 
@@ -27,12 +28,12 @@ export default class PostItem extends React.Component {
 
   componentWillReceiveProps(){
     Animated.timing(this.state.animation, {
-        toValue: 350,
+        toValue: 1000,
         duration: 0
     }).start();
     this.refs.commentList.scrollToOffset({offset: 0, animated: false});
     this.loadComments();
-    this.setState({animation: new Animated.Value(350)});
+    this.setState({animation: new Animated.Value(320)});
   }
 
   setOffset(e){
@@ -43,7 +44,7 @@ export default class PostItem extends React.Component {
     let delta_offset = e.nativeEvent.contentOffset.y - this.offset;
     if(delta_offset >= 30){
       Animated.timing(this.state.animation, {
-          toValue: 50,
+          toValue: 60,
           duration: 300
       }).start();
     }
@@ -51,7 +52,7 @@ export default class PostItem extends React.Component {
 
   reduceSlider(){
     Animated.timing(this.state.animation, {
-        toValue: 350,
+        toValue: 320,
         duration: 300
     }).start();
   }
@@ -63,7 +64,7 @@ export default class PostItem extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 40}}>
         <Category categoryname={this.props.category} />
         <Text style={{fontWeight: 'bold', fontSize: 16, paddingLeft: 4 }}>{this.props.title}</Text>
         <Animated.View
@@ -72,20 +73,20 @@ export default class PostItem extends React.Component {
         >
           <ImageZoom
             cropWidth={this.props.width}
-            cropHeight={350}
+            cropHeight={320}
             imageWidth={this.props.width}
-            imageHeight={350}
+            imageHeight={320}
             style={{ backgroundColor: '#eee' }}
           >
             <Image
-              style={{width: this.props.width, height: 350}}
+              style={{width: this.props.width, height: 320}}
               source={{ uri: this.props.media }}
               resizeMethod='scale'
               resizeMode='contain'
             />
           </ImageZoom>
         </Animated.View>
-        <View  style={{flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+        <View  style={{flex: 1, backgroundColor: 'yellow' }}>
           <View style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -96,13 +97,14 @@ export default class PostItem extends React.Component {
             </TouchableOpacity>
             <View  style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
               <UpVotesCounter count={this.props.upvotes} style={{paddingRight: 20}}/>
-              <DownVotesCounter count={this.props.downvotes}/>
               <CommentsCounter count={this.props.comments}/>
+              <DownVotesCounter count={this.props.downvotes}/>
             </View>
             <TouchableOpacity onPress={this.props.showNext}>
               <Icon size={44} color="gray" opacity={0.5} name={"arrow-right-drop-circle"} />
             </TouchableOpacity>
           </View>
+          <BannerSlim />
           <FlatList
             ref='commentList'
             onScrollBeginDrag={(e) => this.setOffset(e)}

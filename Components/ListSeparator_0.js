@@ -8,7 +8,8 @@ export default class ListSeparator_0 extends React.Component {
       <Text style={{
         textAlign: 'center',
         fontSize: 12,
-        color: '#aaa',
+        color: '#eee',
+        backgroundColor: '#ccc',
         paddingTop: 4,
         paddingBottom: 4
       }}>
