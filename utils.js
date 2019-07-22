@@ -8,7 +8,6 @@ export function getUser() {
 }
 
 export function setUser(userInfo) {
-    console.log(typeof userInfo);
     return AsyncStorage.setItem('user', userInfo);
 }
 
