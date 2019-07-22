@@ -7,6 +7,8 @@ import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
 import { getUser } from './utils';
 import ListSeparator_0 from './Components/ListSeparator_0';
+import ListSeparator_1 from './Components/ListSeparator_1';
+import BannerSlim from './Components/BannerSlim';
 
 export default class App extends React.Component {
 
@@ -15,7 +17,7 @@ export default class App extends React.Component {
     this.state = {
       cursor: '',
       posts: [],
-      viewType: 'items',
+      viewType: 'item',
       postId: 0,
       modalTab: "Closed",
       scrollPos: 0,
@@ -24,6 +26,15 @@ export default class App extends React.Component {
       user: null,
       navigator: true
     }
+
+    this._onViewableItemsChanged = ({ viewableItems, changed }) => {
+        console.log("Visible items are", viewableItems);
+        console.log("Changed in this iteration", changed);
+      };
+
+    this._viewabilityConfig = {
+      itemVisiblePercentThreshold: 50
+    };
   }
 
   componentWillMount() {
@@ -32,22 +43,6 @@ export default class App extends React.Component {
 
   componentDidMount () {
     this.setState({posts: POSTS.default});
-  }
-
-  showPrev () {
-   let curr_index = this.state.posts.findIndex(post => post._id === this.state.postId);
-   if(curr_index !== 0){
-    let prev_post = this.state.posts[curr_index - 1];
-    this.showPostDetail(prev_post);
-   }
-  }
-
-  showNext () {
-    let curr_index = this.state.posts.findIndex(post => post._id === this.state.postId);
-    if(curr_index < this.state.posts.length - 1){
-      let next_post = this.state.posts[curr_index + 1];
-      this.showPostDetail(next_post);
-    }
   }
 
   setOffset(e){
@@ -69,27 +64,35 @@ export default class App extends React.Component {
         this.setState({navigator: true});
       }
     }
-   
+
   }
+
 
   showContent () {
 
     if(this.state.viewType == 'detail'){
       post = this.state.posts.find(post => post._id === this.state.postId);
       return (
-        <PostDetail
-          id={post._id}
-          media={post.media}
-          title={post.title}
-          downvotes={post.downvotes}
-          upvotes={post.upvotes}
-          comments={post.comments}
-          category={post.category}
-          width={this.state.width}
-          height={this.state.height}
-          showPrev={() => this.showPrev()}
-          showNext={() => this.showNext()}
-      />
+        <FlatList
+          data={this.state.posts}
+          initialNumToRender={1}
+          keyExtractor={(item) => item._id}
+          horizontal={true}
+          pagingEnabled={true}
+          renderItem={ ({item, index}) => (
+            <PostDetail
+              id={item._id}
+              media={item.media}
+              title={item.title}
+              downvotes={item.downvotes}
+              upvotes={item.upvotes}
+              comments={item.comments}
+              category={item.category}
+              width={this.state.width}
+              height={this.state.height}
+          />
+          )}
+        />
       );
     } else {
       return (
@@ -100,6 +103,7 @@ export default class App extends React.Component {
           keyExtractor={(item) => item._id}
           onScrollBeginDrag={(e) => this.setOffset(e)}
           onScrollEndDrag={(e) => this.handle_ScrollEndDrag(e)}
+          pagingEnabled={false}
           renderItem={ ({item, index}) => (
             <PostItem
               index={index}
@@ -133,12 +137,14 @@ export default class App extends React.Component {
       let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
       let width = maxWidth;
       let height = srcHeight * ratio;
+
       this.setState({
         viewType: "detail",
         postId: post._id,
         modalTab: "Closed",
         height: height,
-        width: width
+        width: width,
+        navigator: true
       });
     }, error => {
       console.log('error:', error);
@@ -161,6 +167,7 @@ export default class App extends React.Component {
           visible={this.state.navigator}
         />
         {this.showContent()}
+        <BannerSlim />
         <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />
       </View>
     )

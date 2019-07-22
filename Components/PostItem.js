@@ -25,12 +25,12 @@ export default class PostItem extends React.Component {
     }, error => {
       console.log('error:', error);
     });
-    
-    
+
+
   }
 
   renderBanner(){
-    
+
     if(this.props.index % 4 === 0 && this.props.index != 0){
       return <View>
         <ListSeparator_0 />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import TopNavigatorTabs from './TopNavigatorTabs';
 
@@ -32,10 +32,13 @@ export default class TopNavigator extends React.Component {
   }
 
   render() {
-    console.log(this.state.visible, typeof this.state.visible);
+
     if(this.state.visible){
       return (
-        <View style={{ backgroundColor: 'green', height: 40}}>
+        <View style={{
+          backgroundColor: 'green',
+          height: 40,
+        }}>
           <TopNavigatorTabs onTabPress={tab => this.onTabPress(tab)} />
         </View>
       )
