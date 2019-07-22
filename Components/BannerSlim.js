@@ -1,5 +1,11 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded
+} from 'expo-ads-admob';
 
 export default class BannerSlim extends React.Component {
   
@@ -9,16 +15,11 @@ export default class BannerSlim extends React.Component {
 
   render() {
     return (
-      <View style={{ height: 60, alignItems:'center', justifyContent:'center',  backgroundColor: 'red'}}>
-        <Text style={{
-            fontSize: 12,  
-            fontWeight: 'bold', 
-            textAlign: 'center',
-            backgroundColor: 'yellow'
-        }}>
-            Reserved space for monetization
-        </Text>
-      </View>
+      <AdMobBanner
+        bannerSize="smartBannerPortrait"
+        adUnitID="ca-app-pub-3940256099942544/6300978111" // Test ID, Replace with your-admob-unit-id
+        testDeviceID="EMULATOR"
+      />
     )
   }
 }

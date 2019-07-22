@@ -1,13 +1,14 @@
 import React from 'react';
-import {Animated, View, Text, FlatList, Image, Dimensions } from 'react-native';
+import shuffle from 'shuffle-array';
+import { View, FlatList, Image, Dimensions } from 'react-native';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
 import TopNavigator from './Components/TopNavigator';
 import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
+import * as COMMENTS from './assets/COMMENTS.json';
 import { getUser } from './utils';
 import ListSeparator_0 from './Components/ListSeparator_0';
-import ListSeparator_1 from './Components/ListSeparator_1';
 import BannerSlim from './Components/BannerSlim';
 
 export default class App extends React.Component {
@@ -17,6 +18,7 @@ export default class App extends React.Component {
     this.state = {
       cursor: '',
       posts: [],
+      comments: [],
       viewType: 'item',
       postId: 0,
       modalTab: "Closed",
@@ -24,17 +26,22 @@ export default class App extends React.Component {
       width: 0,
       height: 0,
       user: null,
-      navigator: true
+      navigator: true,
     }
 
     this._onViewableItemsChanged = ({ viewableItems, changed }) => {
-        console.log("Visible items are", viewableItems);
-        console.log("Changed in this iteration", changed);
-      };
+      if(this.state.viewType === 'detail'){
+        this.loadComments();
+      }
+    };
 
     this._viewabilityConfig = {
       itemVisiblePercentThreshold: 50
     };
+  }
+
+  loadComments(){
+    this.setState({comments: shuffle(COMMENTS.default.map(c => Object.assign({}, c, { profile_picture: 'https://picsum.photos/id/'+Math.floor(Math.random() * 301)+'/300/300' })))});
   }
 
   componentWillMount() {
@@ -79,6 +86,8 @@ export default class App extends React.Component {
           keyExtractor={(item) => item._id}
           horizontal={true}
           pagingEnabled={true}
+          viewabilityConfig={this._viewabilityConfig}
+          onViewableItemsChanged={this._onViewableItemsChanged}
           renderItem={ ({item, index}) => (
             <PostDetail
               id={item._id}
@@ -86,7 +95,7 @@ export default class App extends React.Component {
               title={item.title}
               downvotes={item.downvotes}
               upvotes={item.upvotes}
-              comments={item.comments}
+              comments={this.state.comments}
               category={item.category}
               width={this.state.width}
               height={this.state.height}
@@ -104,6 +113,8 @@ export default class App extends React.Component {
           onScrollBeginDrag={(e) => this.setOffset(e)}
           onScrollEndDrag={(e) => this.handle_ScrollEndDrag(e)}
           pagingEnabled={false}
+          viewabilityConfig={this._viewabilityConfig}
+          onViewableItemsChanged={this._onViewableItemsChanged}
           renderItem={ ({item, index}) => (
             <PostItem
               index={index}

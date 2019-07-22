@@ -1,23 +1,18 @@
 import React from 'react';
-import shuffle from 'shuffle-array';
-import { Text, TextInput, View, ScrollView, Image, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { Text, TextInput, View, ScrollView, Image,  FlatList, Dimensions } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
-import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import UpVotesCounter from './UpVotesCounter';
 import DownVotesCounter from './DownVotesCounter';
 import CommentsCounter from './CommentsCounter';
 import Category from './Category';
 import PostComment from './PostComment';
 import ListSeparator_0 from './ListSeparator_0';
-// import * as COMMENTS from '../assets/COMMENTS.json';
-
 
 export default class PostItem extends React.Component {
 
   constructor(props){
     super(props)
     this.state = {
-      comments: [],
       textInputHeight: 0
     };
   }
@@ -30,9 +25,7 @@ export default class PostItem extends React.Component {
     this.setState({textInputHeight: 0});
   }
 
-  loadComments(){
-    this.setState({comments: shuffle(COMMENTS.default.map(c => Object.assign({}, c, { profile_picture: 'https://picsum.photos/id/'+Math.floor(Math.random() * 301)+'/300/300' })))});
-  }
+  
 
   render() {
     return (
@@ -63,20 +56,7 @@ export default class PostItem extends React.Component {
               <CommentsCounter count={this.props.comments}/>
               <DownVotesCounter count={this.props.downvotes}/>
             </View>
-            <FlatList
-              ref='commentList'
-              ItemSeparatorComponent={() => <ListSeparator_0 />}
-              data={this.state.comments}
-              keyExtractor={(item, index) => item._id}
-              renderItem={ ({item}) => {
-                return <PostComment
-                  id={item._id}
-                  user={item.user}
-                  text={item.text}
-                  profilePic={item.profile_picture}
-                />
-              }}
-            />
+           
         </ScrollView>
         <TextInput
           style={{
