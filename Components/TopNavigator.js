@@ -21,7 +21,7 @@ export default class TopNavigator extends React.Component {
 
   onTabPress(tab) {
     if(tab === "Hot"){
-      this.props.showPostItems();
+      this.props.switchToVertical();
     }
     else if(tab === "Account"){
       this.props.set_modalTab("Account");

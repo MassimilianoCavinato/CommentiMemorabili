@@ -13,7 +13,7 @@ export default class UserImage extends React.Component {
         style={{
           width: this.props.radius,
           height: this.props.radius,
-          borderRadius: this.props.radius/2,
+          // borderRadius: this.props.radius/2,
         }}
         source={{ uri: this.props.uri }}
       />

@@ -36,6 +36,8 @@ export default class PostItem extends React.Component {
         <ListSeparator_0 />
         <BannerLarge />
       </View>
+    }else{
+      return null;
     }
   }
 

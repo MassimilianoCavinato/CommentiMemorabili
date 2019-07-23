@@ -1,12 +1,12 @@
 import React from 'react';
 import shuffle from 'shuffle-array';
-import { View, FlatList, Image, Dimensions } from 'react-native';
+import { View, VirtualizedList, Image, Dimensions, TextInput } from 'react-native';
 import PostDetail from './Components/PostDetail';
 import PostItem from './Components/PostItem';
 import TopNavigator from './Components/TopNavigator';
 import ModalTab from './Components/ModalTab';
 import * as POSTS from './assets/POSTS.json';
-import * as COMMENTS from './assets/COMMENTS.json';
+
 import { getUser } from './utils';
 import ListSeparator_0 from './Components/ListSeparator_0';
 import BannerSlim from './Components/BannerSlim';
@@ -18,9 +18,9 @@ export default class App extends React.Component {
     this.state = {
       cursor: '',
       posts: [],
-      comments: [],
+      horizontal: false,
       viewType: 'item',
-      postId: 0,
+      postId: -1,
       modalTab: "Closed",
       scrollPos: 0,
       width: 0,
@@ -29,19 +29,15 @@ export default class App extends React.Component {
       navigator: true,
     }
 
-    this._onViewableItemsChanged = ({ viewableItems, changed }) => {
-      if(this.state.viewType === 'detail'){
-        this.loadComments();
-      }
-    };
-
-    this._viewabilityConfig = {
-      itemVisiblePercentThreshold: 50
-    };
-  }
-
-  loadComments(){
-    this.setState({comments: shuffle(COMMENTS.default.map(c => Object.assign({}, c, { profile_picture: 'https://picsum.photos/id/'+Math.floor(Math.random() * 301)+'/300/300' })))});
+    // this._onViewableItemsChanged = ({ viewableItems, changed }) => {
+    //   // if(this.state.viewType === 'detail'){
+    //   //
+    //   // }
+    // };
+    //
+    // this._viewabilityConfig = {
+    //   itemVisiblePercentThreshold: 50
+    // };
   }
 
   componentWillMount() {
@@ -49,7 +45,98 @@ export default class App extends React.Component {
   }
 
   componentDidMount () {
-    this.setState({posts: POSTS.default});
+    this.loadPosts();
+  }
+
+  shouldItemUpdate(update){
+    console.log(update);
+  }
+
+  render () {
+    return (
+      <View
+        style={{ flex: 1, backgroundColor: '#ddd'}}
+      >
+        <View style={{
+          backgroundColor: 'green',
+          height: 24
+        }}
+        />
+        <TopNavigator
+          set_modalTab={modalTab => this.set_modalTab(modalTab)}
+          switchToVertical={() => this.switchToVertical()}
+          visible={this.state.navigator}
+        />
+        <VirtualizedList
+          style={{ flex: 1 }}
+          ref='_scrollView'
+          data={this.state.posts}
+          getItemCount={(data) => data.length}
+          getItem={(data, index) => data[index]}
+          keyExtractor={(item) => item._id}
+          initialNumToRender={5}
+          windowSize={11}
+          ItemSeparatorComponent={() => this.state.horizontal === true ? null : <ListSeparator_0 />}
+          onScrollBeginDrag={(e) => this.setOffset(e)}
+          onScrollEndDrag={(e) => this.handle_ScrollEndDrag(e)}
+          horizontal={this.state.horizontal}
+          pagingEnabled={this.state.horizontal}
+          renderItem={ ({item, index}) => {
+            return (
+              <PostDetail
+                horizontal={this.state.horizontal}
+                selected={this.state.postId === item._id}
+                id={item._id}
+                index={index}
+                media={item.media}
+                title={item.title}
+                downvotes={item.downvotes}
+                upvotes={item.upvotes}
+                comments={item.comments}
+                category={item.category}
+                srcWidth={item.srcWidth}
+                srcHeight={item.srcHeight}
+                switchToHorizontal={()=> this.switchToHorizontal()}
+              />
+            );
+          }}
+        />
+        {this.renderTextInput()}
+        <BannerSlim />
+        <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />
+      </View>
+    )
+  }
+
+  loadPosts(){
+    let posts = require('./assets/POSTS.json');
+    let promises = posts.map(post => {
+      return new Promise((resolve, reject) => {
+        Image.getSize(post.media, (srcWidth, srcHeight) => {
+          resolve({
+            srcWidth: srcWidth,
+            srcHeight: srcHeight
+          });
+        });
+      });
+    });
+
+    Promise.all(promises)
+    .then(sizes => {
+      posts = posts.map((post, index) => {
+        return Object.assign({}, post, {
+          srcWidth: sizes[index].srcWidth,
+          srcHeight: sizes[index].srcHeight
+        });
+      });
+
+      this.setState({
+        posts: posts
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
   setOffset(e){
@@ -71,116 +158,62 @@ export default class App extends React.Component {
         this.setState({navigator: true});
       }
     }
-
-  }
-
-
-  showContent () {
-
-    if(this.state.viewType == 'detail'){
-      post = this.state.posts.find(post => post._id === this.state.postId);
-      return (
-        <FlatList
-          data={this.state.posts}
-          initialNumToRender={1}
-          keyExtractor={(item) => item._id}
-          horizontal={true}
-          pagingEnabled={true}
-          viewabilityConfig={this._viewabilityConfig}
-          onViewableItemsChanged={this._onViewableItemsChanged}
-          renderItem={ ({item, index}) => (
-            <PostDetail
-              id={item._id}
-              media={item.media}
-              title={item.title}
-              downvotes={item.downvotes}
-              upvotes={item.upvotes}
-              comments={this.state.comments}
-              category={item.category}
-              width={this.state.width}
-              height={this.state.height}
-          />
-          )}
-        />
-      );
-    } else {
-      return (
-        <FlatList
-          ref='_scrollView'
-          data={this.state.posts}
-          ItemSeparatorComponent={() => <ListSeparator_0 />}
-          keyExtractor={(item) => item._id}
-          onScrollBeginDrag={(e) => this.setOffset(e)}
-          onScrollEndDrag={(e) => this.handle_ScrollEndDrag(e)}
-          pagingEnabled={false}
-          viewabilityConfig={this._viewabilityConfig}
-          onViewableItemsChanged={this._onViewableItemsChanged}
-          renderItem={ ({item, index}) => (
-            <PostItem
-              index={index}
-              id={item._id}
-              media={item.media}
-              title={item.title}
-              downvotes={item.downvotes}
-              upvotes={item.upvotes}
-              comments={item.comments}
-              category={item.category}
-              showPostDetail={()=> this.showPostDetail(item)}
-            />
-          )}
-        />
-      );
-    }
   }
 
   set_modalTab(modalTab) {
     this.setState({modalTab: modalTab});
   }
 
-  showPostItems () {
-    this.setState({viewType: 'items', modalTab: "Closed"});
+  switchToHorizontal(){
+    if(this.state.horizontal === false){
+      this.setState({
+        horizontal: true,
+        navigator: true,
+        modalTab: "Closed",
+        postId: 1
+      });
+    }
   }
 
-  showPostDetail (post) {
-    Image.getSize(post.media, (srcWidth, srcHeight) => {
-      let maxHeight = Dimensions.get('window').height;
-      let maxWidth = Dimensions.get('window').width;
-      let ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-      let width = maxWidth;
-      let height = srcHeight * ratio;
-
-      this.setState({
-        viewType: "detail",
-        postId: post._id,
-        modalTab: "Closed",
-        height: height,
-        width: width,
-        navigator: true
-      });
-    }, error => {
-      console.log('error:', error);
+  switchToVertical(){
+    this.setState({
+      horizontal: false,
+      navigator: true,
+      modalTab: "Closed",
+      postId: -1
     });
   }
 
-  render () {
-    return (
-      <View
-        style={{ flex: 1, backgroundColor: '#ddd'}}
-      >
-        <View style={{
-          backgroundColor: 'green',
-          height: 24
-        }}
-        />
-        <TopNavigator
-          set_modalTab={modalTab => this.set_modalTab(modalTab)}
-          showPostItems={() => this.showPostItems()}
-          visible={this.state.navigator}
-        />
-        {this.showContent()}
-        <BannerSlim />
-        <ModalTab set_modalTab={modalTab => this.set_modalTab(modalTab)} modalTab={this.state.modalTab} />
-      </View>
-    )
+  increaseTextInputHeight(){
+    this.setState({textInputHeight: -200});
   }
+
+  decreaseTextInputHeight(){
+    this.setState({textInputHeight: 0});
+  }
+
+  renderTextInput(){
+    if(this.state.horizontal === true){
+      return (
+        <TextInput
+          style={{
+            height: 40,
+            borderColor: 'gray',
+            borderWidth: 1,
+            borderRadius: 4,
+            margin: 2,
+            top: this.state.textInputHeight,
+            padding: 2,
+            backgroundColor: 'white'
+          }}
+          keyboardAppearance='dark'
+          placeholder='Scrivi ...'
+          onFocus={()=>this.increaseTextInputHeight()}
+          onBlur={()=>this.decreaseTextInputHeight()}
+          returnKeyType="send"
+        />
+      )
+    }
+  }
+
 }

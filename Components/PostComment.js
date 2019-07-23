@@ -5,17 +5,21 @@ import UserImage from './UserImage';
 export default class PostComment extends React.Component {
 
   constructor(props){
-    super(props)
+    super(props);
+  }
+
+  componentDidMount(){
+
   }
 
   render() {
     return (
-      <View style={{margin: 2, borderRadius: 16 }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <UserImage radius={30} uri={this.props.profilePic} />
-          <Text style={{fontWeight: 'bold', fontSize: 18, paddingLeft: 4 }}>{this.props.user.name}</Text>
+      <View style={{flexDirection: 'row', alignItems: 'top', padding: 4, borderWidth: 3, borderColor: 'red'}}>
+        <UserImage radius={60} uri={this.props.profilePic} />
+        <View style={{ paddingLeft: 4, paddingRight: 58 }}>
+          <Text style={{fontWeight: 'bold', fontSize: 20 }}>{this.props.user.name}</Text>
+          <Text style={{fontSize: 16 }}>{this.props.text}</Text>
         </View>
-        <Text style={{fontSize: 16, paddingLeft: 8, }}>{this.props.text}</Text>
       </View>
     )
   }
