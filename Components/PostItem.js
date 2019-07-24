@@ -6,6 +6,7 @@ import CommentsCounter from './CommentsCounter';
 import Category from './Category';
 import BannerLarge from './BannerLarge';
 import ListSeparator_0 from './ListSeparator_0';
+
 export default class PostItem extends React.Component {
 
   constructor(props){
@@ -25,12 +26,9 @@ export default class PostItem extends React.Component {
     }, error => {
       console.log('error:', error);
     });
-
-
   }
 
   renderBanner(){
-
     if(this.props.index % 4 === 0 && this.props.index != 0){
       return <View>
         <ListSeparator_0 />
@@ -45,7 +43,7 @@ export default class PostItem extends React.Component {
     return (
       <View style={{backgroundColor: '#fff', flex: 1}}>
         <TouchableOpacity
-           onPress={() => this.props.showPostDetail(this.props.id)}
+          onPress={() => this.props.navigateToComments()}
         >
           <Category categoryname={this.props.category} />
           <Text style={{fontWeight: 'bold', fontSize: 18, paddingLeft: 4 }}>{this.props.title}</Text>
@@ -58,8 +56,12 @@ export default class PostItem extends React.Component {
         />
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
           <UpVotesCounter count={this.props.upvotes}/>
+          <TouchableOpacity
+            onPress={() => this.props.navigateToComments()}
+          >
+            <CommentsCounter count={this.props.comments}/>
+          </TouchableOpacity>
           <DownVotesCounter count={this.props.downvotes}/>
-          <CommentsCounter count={this.props.comments}/>
         </View>
         {this.renderBanner()}
       </View>

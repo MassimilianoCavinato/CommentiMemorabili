@@ -11,8 +11,8 @@ export default class CommentsCounter extends React.Component {
   render() {
     return (
       <View style={{alignItems: 'center', flexDirection: 'row', padding: 4 }}>
-        <Icon size={20} color="#aaa" name={"comment"} style={{ marginRight: 4 }} />
-        <Text style={{fontSize: 12,  color:"#aaa"}}>{this.props.count.toString()}</Text>
+        <Icon size={30} color="#aaa" name={"comment"} style={{ marginRight: 4 }} />
+        <Text style={{fontSize: 20,  fontWeight: 'bold', color:"#aaa"}}>{this.props.count.toString()}</Text>
       </View>
     )
   }

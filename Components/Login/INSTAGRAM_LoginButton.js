@@ -32,12 +32,6 @@ export default class INSTAGRAM_LoginButton extends Component {
         });
     }
 
-    onPress() {
-      this.props.onButtonPress();
-      this.refs.instagramLogin.show();
-    }
-
-
     render() {
         return (
             <View>
@@ -47,7 +41,6 @@ export default class INSTAGRAM_LoginButton extends Component {
                     type='instagram'
                     title="Login with Instagram"
                     onPress={()=> {
-                      this.props.onButtonPress('instagram_login');
                       this.refs.instagramLogin.show();
                     }}
                 />
@@ -57,11 +50,10 @@ export default class INSTAGRAM_LoginButton extends Component {
                     redirectUrl='http://instagram.com'
                     scopes={['public_content']}
                     onLoginSuccess={ (token) => {
-                      this.props.onButtonPress('instagram_login_close');
                       this.getUserInfo(token);
                     }}
-                    onClose={()=>this.props.onButtonPress('instagram_login_close')}
-                    onLoginFailure={(data) => this.props.onButtonPress('instagram_login_close')}
+                    onClose={()=>{}}
+                    onLoginFailure={(data) => {}}
                 />
             </View>
         )

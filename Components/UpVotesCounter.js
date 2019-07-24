@@ -11,8 +11,8 @@ export default class UpVotestCounter extends React.Component {
   render() {
     return (
       <View style={{alignItems: 'center', flexDirection: 'row', padding: 4  }}>
-        <Icon size={24} color="#aaa" name={"arrow-up-bold"} />
-        <Text style={{fontSize: 12,  color:"#aaa" }}>{this.props.count.toString()}</Text>
+        <Icon size={30} color="#aaa" name={"arrow-up-bold"} />
+        <Text style={{fontSize: 20, fontWeight: 'bold', color:"#aaa" }}>{this.props.count.toString()}</Text>
       </View>
     )
   }

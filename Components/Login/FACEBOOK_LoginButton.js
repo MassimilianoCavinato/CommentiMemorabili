@@ -6,7 +6,6 @@ import * as Facebook from 'expo-facebook';
 export default class FACEBOOK_LoginButton extends Component {
 
   _handleFacebookLogin = async () => {
-    this.props.onButtonPress("facebook_lgin");
     try {
 
       const { type, token } = await Facebook.logInWithReadPermissionsAsync(

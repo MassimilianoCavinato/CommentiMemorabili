@@ -1,13 +1,30 @@
+
+import RCTNetworking from 'RCTNetworking';
 import React from 'react';
+import { View, Text, Image, Button } from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 import FACEBOOK_LoginButton from './Login/FACEBOOK_LoginButton';
 import GOOGLE_LoginButton from './Login/GOOGLE_LoginButton';
 import INSTAGRAM_LoginButton from './Login/INSTAGRAM_LoginButton';
 import COMMENTIMEMORABILI_LoginButton from './Login/COMMENTIMEMORABILI_LoginButton';
-import { View, Text, Image, Button } from 'react-native';
 import { getUser, setUser, unsetUser } from '../utils';
-import RCTNetworking from 'RCTNetworking';
 
-export default class UserTab extends React.Component {
+export default class UserProfile extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Profilo Utente',
+      headerBackTitle: 'Torna',
+      headerStyle: {
+        backgroundColor: 'green',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      }
+    }
+  }
+
   constructor(props){
     super(props);
     this.state = {
@@ -70,9 +87,9 @@ export default class UserTab extends React.Component {
       return (
         <View>
           <COMMENTIMEMORABILI_LoginButton setUserInfo={(userInfo) => this.setUserInfo(userInfo)} />
-          <FACEBOOK_LoginButton onButtonPress={(btn)=>this.props.onButtonPress(btn)} setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
-          <GOOGLE_LoginButton onButtonPress={(btn)=>this.props.onButtonPress(btn)} setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
-          <INSTAGRAM_LoginButton onButtonPress={(btn)=>this.props.onButtonPress(btn)} setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
+          <FACEBOOK_LoginButton setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
+          <GOOGLE_LoginButton setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
+          <INSTAGRAM_LoginButton setUserInfo={(userInfo) => this.setUserInfo(userInfo)}/>
         </View>
       )
     }
@@ -89,7 +106,7 @@ export default class UserTab extends React.Component {
 
   render() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,.25)' }}>
+        <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,.95)'}}>
           {this.showUserTab()}
         </View>
     )

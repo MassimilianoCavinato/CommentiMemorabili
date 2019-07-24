@@ -19,6 +19,7 @@
     "react-native-device-info": "^2.2.2",
     "react-native-elements": "^1.1.0",
     "react-native-fbsdk": "0.10.1",
+    "react-native-gesture-handler": "^1.2.2",
     "react-native-google-signin": "^0.10.0",
     "react-native-image-pan-zoom": "^2.1.11",
     "react-native-image-placeholder": "^1.0.14",
@@ -28,7 +29,9 @@
     "react-native-modal": "^11.1.0",
     "react-native-swipe-gestures": "1.0.3",
     "react-native-swipeout": "^2.3.6",
+    "react-native-uuid": "^1.4.9",
     "react-native-web": "^0.11.4",
+    "react-navigation": "^3.11.1",
     "shuffle-array": "^1.0.1"
   },
   "devDependencies": {
