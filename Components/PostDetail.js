@@ -62,9 +62,15 @@ export default class PostDetail extends React.Component {
               resizeMode='contain'
             />
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <UpVotesCounter count={this.props.upvotes}/>
-              <CommentsCounter count={this.props.comments}/>
-              <DownVotesCounter count={this.props.downvotes}/>
+              <TouchableOpacity onPress={() => alert('DOWNVOTE: '+this.props.title)}>
+                <DownVotesCounter count={this.props.downvotes}/>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <CommentsCounter count={this.props.comments}/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => alert('UPVOTE: '+this.props.title)}>
+                <UpVotesCounter count={this.props.upvotes}/>
+              </TouchableOpacity>
             </View>
           </View>
         }

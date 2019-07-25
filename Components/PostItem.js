@@ -43,25 +43,27 @@ export default class PostItem extends React.Component {
     return (
       <View style={{backgroundColor: '#fff', flex: 1}}>
         <TouchableOpacity
-          onPress={() => this.props.navigateToComments()}
+          onPress={() => this.props.navigateToComments(this.props.id)}
         >
           <Category categoryname={this.props.category} />
           <Text style={{fontWeight: 'bold', fontSize: 18, paddingLeft: 4 }}>{this.props.title}</Text>
         </TouchableOpacity>
         <Image
-          style={{width: this.state.width, height: this.state.height }}
-          source={{ uri: this.props.media }}
+          style={{width: this.state.width, height: this.state.height}}
+          source={{uri: this.props.media}}
           resizeMethod='scale'
           resizeMode='contain'
         />
         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-          <UpVotesCounter count={this.props.upvotes}/>
-          <TouchableOpacity
-            onPress={() => this.props.navigateToComments()}
-          >
+          <TouchableOpacity onPress={() => alert('DOWNVOTE: '+this.props.title)}>
+            <DownVotesCounter count={this.props.downvotes}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.navigateToComments(this.props.id)}>
             <CommentsCounter count={this.props.comments}/>
           </TouchableOpacity>
-          <DownVotesCounter count={this.props.downvotes}/>
+          <TouchableOpacity onPress={() => alert('UPVOTE: '+this.props.title)}>
+            <UpVotesCounter count={this.props.upvotes}/>
+          </TouchableOpacity>
         </View>
         {this.renderBanner()}
       </View>

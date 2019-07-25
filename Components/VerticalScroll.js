@@ -65,7 +65,10 @@ export default class VerticalScroll extends React.Component {
                 upvotes={item.upvotes}
                 comments={item.comments}
                 category={item.category}
-                navigateToComments={()=>this.props.navigation.navigate('HorizontalScroll')}
+                navigateToComments={(postId)=> {
+                  console.log('going horizontl', postId);
+                  this.props.navigation.navigate('HorizontalScroll', { currentPostId: postId })
+                }}
               />
             );
           }}

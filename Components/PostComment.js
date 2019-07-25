@@ -8,13 +8,9 @@ export default class PostComment extends React.Component {
     super(props);
   }
 
-  componentDidMount(){
-
-  }
-
   render() {
     return (
-      <View style={{flexDirection: 'row', alignItems: 'top', padding: 4, borderWidth: 3, borderColor: 'red'}}>
+      <View style={{flexDirection: 'row', alignItems: 'top', padding: 4, borderWidth: 3, borderColor: 'red', margin: 4 }}>
         <UserImage radius={60} uri={this.props.profilePic} />
         <View style={{ paddingLeft: 4, paddingRight: 58 }}>
           <Text style={{fontWeight: 'bold', fontSize: 20 }}>{this.props.user.name}</Text>

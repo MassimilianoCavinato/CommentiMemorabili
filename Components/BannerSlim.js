@@ -8,7 +8,7 @@ import {
 } from 'expo-ads-admob';
 
 export default class BannerSlim extends React.Component {
-  
+
   constructor(props){
     super(props)
   }
@@ -23,5 +23,3 @@ export default class BannerSlim extends React.Component {
     )
   }
 }
-
-
