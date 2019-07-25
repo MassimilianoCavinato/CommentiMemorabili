@@ -36,9 +36,11 @@ export default class VerticalScroll extends React.Component {
   }
 
   loadPosts(){
-    // let posts = require('../assets/POSTS.json');
-
     this.setState({ posts: require('../assets/POSTS.json')});
+  }
+
+  navigateToComments(id){
+    this.props.navigation.navigate('HorizontalScroll', { post: this.state.posts.find(post => post._id === id) })
   }
 
   render() {
@@ -65,10 +67,7 @@ export default class VerticalScroll extends React.Component {
                 upvotes={item.upvotes}
                 comments={item.comments}
                 category={item.category}
-                navigateToComments={(postId)=> {
-                  console.log('going horizontl', postId);
-                  this.props.navigation.navigate('HorizontalScroll', { currentPostId: postId })
-                }}
+                navigateToComments={(id)=> this.navigateToComments(id)}
               />
             );
           }}
