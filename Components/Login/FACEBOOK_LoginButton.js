@@ -2,26 +2,37 @@ import React, { Component } from 'react';
 import { SocialIcon } from 'react-native-elements';
 import { Alert, View } from 'react-native';
 import * as Facebook from 'expo-facebook';
-
 export default class FACEBOOK_LoginButton extends Component {
 
-  _handleFacebookLogin = async () => {
+  constructor(){
+    super();
+  }
+
+
+  getUserInfo = async () => {
     try {
 
       const { type, token } = await Facebook.logInWithReadPermissionsAsync(
         '1201211719949057', // Replace with your own app id in standalone app
-        { permissions: ['public_profile'] }
+        { permissions: ['instagram_basic'] }
       );
-
+      console.log(type)
       switch (type) {
         case 'success': {
-          // Get the user's name using Facebook's Graph API
-          const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-          const profile = await response.json();
-          Alert.alert(
-            'Logged in!',
-            `Hi ${profile.name}!`,
-          );
+
+          let response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,first_name,last_name,short_name,picture`);
+          let profile = await response.json();
+
+          let userInfo = {
+              id: profile.id,
+              platform: "facebook",
+              token: token,
+              username: profile.short_name,
+              full_name: profile.first_name+ " " + profile.last_name,
+              profile_picture: profile.picture.data.url
+          }
+
+          this.props.setUserInfo(userInfo);
           break;
         }
         case 'cancel': {
@@ -53,7 +64,7 @@ export default class FACEBOOK_LoginButton extends Component {
           raised
           type="facebook"
           title="Login with Facebook"
-          onPress={this._handleFacebookLogin}
+          onPress={this.getUserInfo}
       />
     )
   }

@@ -7,7 +7,7 @@ export default class PostComment extends React.Component {
   constructor(props){
     super(props);
   }
-
+  
   render() {
     return (
       <View style={{flexDirection: 'row', alignItems: 'top', padding: 4, borderWidth: 3, borderColor: 'red', margin: 4 }}>

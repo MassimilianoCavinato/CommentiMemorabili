@@ -54,11 +54,14 @@ export default class UserProfile extends React.Component {
   }
 
   setUserInfo(userInfo) {
+    console.log("SETTING USER INFO IN ASYNC STORAGE");
+    console.log(userInfo);
     setUser(userInfo)
     .then(() => {
       return getUser();
     })
     .then(user => {
+      console.log(user);
       if(user){
         this.setState({loading: false, user: user})
       }

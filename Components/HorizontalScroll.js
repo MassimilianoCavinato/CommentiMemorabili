@@ -29,6 +29,7 @@ export default class HorizontalScroll extends React.Component {
     super();
     this.state = {
       posts: [],
+      loading: true 
     }
 
 
@@ -47,10 +48,6 @@ export default class HorizontalScroll extends React.Component {
     let postId = this.props.navigation.getParam('currentPostId', {});
     this.loadPosts(postId);
 
-    setInterval(()=>{
-      this.refs.HorizontalScroll.flashScrollIndicators();
-      console.log('flash');
-    }, 1000);
   }
 
   loadPosts(postId){

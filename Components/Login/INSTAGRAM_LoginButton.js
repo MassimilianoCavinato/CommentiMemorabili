@@ -17,14 +17,14 @@ export default class INSTAGRAM_LoginButton extends Component {
         })
         .then(response => {
             let data = response.data.data;
-            let userInfo = JSON.stringify({
+            let userInfo = {
                 platform: "instagram",
                 token: token,
                 id: data.id,
                 username: data.username,
                 full_name: data.full_name,
                 profile_picture: data.profile_picture
-            });
+            };
             this.props.setUserInfo(userInfo);
         })
         .catch(error => {
