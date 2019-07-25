@@ -7,6 +7,7 @@ import PostDetail from './PostDetail';
 import CommentTextInput from './CommentTextInput';
 import CommentTextPreview from './CommentTextPreview';
 import { getUser } from '../utils';
+import * as COMMENTS from '../assets/POSTS.json'
 export default class HorizontalScroll extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -44,18 +45,11 @@ export default class HorizontalScroll extends React.Component {
   }
 
   componentDidMount(){
-    let postId = this.props.navigation.getParam('currentPostId', {});
-    this.loadPosts(postId);
-
-    setInterval(()=>{
-      this.refs.HorizontalScroll.flashScrollIndicators();
-      console.log('flash');
-    }, 1000);
+    this.setState({ posts: [this.props.navigation.getParam('post', {})]});
   }
 
-  loadPosts(postId){
-
-    this.setState({ posts: require('../assets/POSTS.json')});
+  loadNextBatch(postId){
+    this.setState({ posts: COMMENTS.default});
   }
 
   submitComment(text){

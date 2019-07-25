@@ -2,7 +2,6 @@
 import RCTNetworking from 'RCTNetworking';
 import React from 'react';
 import { View, Text, Image, Button } from 'react-native';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
 import FACEBOOK_LoginButton from './Login/FACEBOOK_LoginButton';
 import GOOGLE_LoginButton from './Login/GOOGLE_LoginButton';
 import INSTAGRAM_LoginButton from './Login/INSTAGRAM_LoginButton';
@@ -28,13 +27,11 @@ export default class UserProfile extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      loading: true,
       user: null
     }
   }
 
   componentDidMount(){
-    RCTNetworking.clearCookies(()=>{});
     this.getUserInfo();
   }
 
@@ -42,10 +39,10 @@ export default class UserProfile extends React.Component {
     getUser()
     .then(user => {
       if(user){
-        this.setState({loading: false, user: user})
+        this.setState({user: user})
       }
       else{
-        this.setState({lading: false});
+        this.setState({user: null})
       }
     })
     .catch(error => {
@@ -56,15 +53,7 @@ export default class UserProfile extends React.Component {
   setUserInfo(userInfo) {
     setUser(userInfo)
     .then(() => {
-      return getUser();
-    })
-    .then(user => {
-      if(user){
-        this.setState({loading: false, user: user})
-      }
-      else{
-        this.setState({lading: false, user: null});
-      }
+      this.getUserInfo();
     })
     .catch(error => {
       console.log(error);
