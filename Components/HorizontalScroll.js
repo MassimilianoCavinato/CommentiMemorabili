@@ -5,9 +5,9 @@ import { View, Text, Button, VirtualizedList, Image, Dimensions } from 'react-na
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import PostDetail from './PostDetail';
 import CommentTextInput from './CommentTextInput';
-import CommentTextPreview from './CommentTextPreview';
 import { getUser } from '../utils';
-import * as COMMENTS from '../assets/POSTS.json'
+import * as COMMENTS from '../assets/POSTS.json';
+
 export default class HorizontalScroll extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -21,7 +21,7 @@ export default class HorizontalScroll extends React.Component {
         fontWeight: 'bold',
       },
       headerRight: (
-        <Icon size={32} color="white" name={'account'} onPress={()=>navigation.navigate('UserProfile')}/>
+        <Icon size={32} color="white" style={{ marginRight: 8 }} name={'account'} onPress={()=>navigation.navigate('UserProfile')}/>
       )
     }
   }
@@ -30,7 +30,7 @@ export default class HorizontalScroll extends React.Component {
     super();
     this.state = {
       posts: [],
-      loading: true 
+      loading: true
     }
 
 
@@ -46,13 +46,7 @@ export default class HorizontalScroll extends React.Component {
   }
 
   componentDidMount(){
-<<<<<<< HEAD
-    let postId = this.props.navigation.getParam('currentPostId', {});
-    this.loadPosts(postId);
-
-=======
     this.setState({ posts: [this.props.navigation.getParam('post', {})]});
->>>>>>> 442634b7354bfc75c7e3cebb16710036c3079e07
   }
 
   loadNextBatch(postId){
@@ -86,6 +80,7 @@ export default class HorizontalScroll extends React.Component {
   render() {
       return (
         <View style={{flex: 1}}>
+
           <VirtualizedList
             ref='HorizontalScroll'
             style={{ flex: 1 }}
@@ -114,7 +109,6 @@ export default class HorizontalScroll extends React.Component {
               );
             }}
           />
-
           <CommentTextInput submitComment={(text)=>this.submitComment(text)} />
         </View>
     );

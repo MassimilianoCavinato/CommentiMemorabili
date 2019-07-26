@@ -19,7 +19,7 @@ export default class VerticalScroll extends React.Component {
         fontWeight: 'bold',
       },
       headerRight: (
-        <Icon size={32} color="white" name={'account'} onPress={()=>navigation.navigate('UserProfile')}/>
+        <Icon size={32} style={{ marginRight: 16, borderRadius: 4 }} color="white" name={'account'} onPress={()=>navigation.navigate('UserProfile')}/>
       )
     }
   }

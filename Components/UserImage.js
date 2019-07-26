@@ -11,9 +11,9 @@ export default class UserImage extends React.Component {
     return (
       <Image
         style={{
-          width: this.props.radius,
-          height: this.props.radius,
-          // borderRadius: this.props.radius/2,
+          width: this.props.size,
+          height: this.props.size,
+          borderRadius: this.props.circle ? this.props.size/2 : 0
         }}
         source={{ uri: this.props.uri }}
       />
