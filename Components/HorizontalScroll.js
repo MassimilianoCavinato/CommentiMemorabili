@@ -1,11 +1,10 @@
 
 import React from 'react';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-import { View, Text, Button, VirtualizedList, Image, Dimensions } from 'react-native';
+import { View,VirtualizedList} from 'react-native';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import PostDetail from './PostDetail';
-import CommentTextInput from './CommentTextInput';
-import { getUser } from '../utils';
+
+
 import * as COMMENTS from '../assets/POSTS.json';
 
 export default class HorizontalScroll extends React.Component {
@@ -34,15 +33,15 @@ export default class HorizontalScroll extends React.Component {
     }
 
 
-    this._onViewableItemsChanged = ({ viewableItems, changed }) => {
-      if(viewableItems.length > 0){
-        this.currentPost = viewableItems[0].item;
-      }
-    };
+    // this._onViewableItemsChanged = ({ viewableItems, changed }) => {
+    //   if(viewableItems.length > 0){
+    //     this.currentPost = viewableItems[0].item;
+    //   }
+    // };
 
-    this._viewabilityConfig = {
-      viewAreaCoveragePercentThreshold: 50
-    };
+    // this._viewabilityConfig = {
+    //   viewAreaCoveragePercentThreshold: 50
+    // };
   }
 
   componentDidMount(){
@@ -53,29 +52,7 @@ export default class HorizontalScroll extends React.Component {
     this.setState({ posts: COMMENTS.default});
   }
 
-  submitComment(text){
-    let post = this.currentPost;
-    getUser()
-    .then(user => {
-      if(user == null){
-        alert('Devi essere loggato');
-        this.props.navigation.navigate('UserProfile');
-      }
-      else{
-        setTimeout(()=>{
-          alert(`
-            Mandando Commento
-            \n
-            Utente: ${user.full_name}
-            \n
-            Post: ${post.title}
-            \n
-            Testo: ${text}
-          `);
-        }, 300);
-      }
-    });
-  }
+  
 
   render() {
       return (
@@ -92,8 +69,8 @@ export default class HorizontalScroll extends React.Component {
             windowSize={9}
             horizontal={true}
             pagingEnabled={true}
-            viewabilityConfig = {this._viewabilityConfig}
-            onViewableItemsChanged = {this._onViewableItemsChanged}
+            // viewabilityConfig = {this._viewabilityConfig}
+            // onViewableItemsChanged = {this._onViewableItemsChanged}
             renderItem={ ({item, index}) => {
               return (
                 <PostDetail
@@ -105,11 +82,12 @@ export default class HorizontalScroll extends React.Component {
                   upvotes={item.upvotes}
                   comments={item.comments}
                   category={item.category}
+                  navigation={this.props.navigation}
                 />
               );
             }}
           />
-          <CommentTextInput submitComment={(text)=>this.submitComment(text)} />
+          
         </View>
     );
   }
