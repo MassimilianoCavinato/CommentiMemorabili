@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "expo": "^33.0.0",
+    "expo": "^46.0.14",
     "expo-facebook": "^5.0.1",
     "expo-google-sign-in": "^5.0.1",
     "millify": "^3.1.0",
